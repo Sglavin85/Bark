@@ -3,13 +3,18 @@ import { withRouter } from 'react-router'
 import OwnerViews from './views/OwnerViews'
 import WalkerViews from './views/WalkerViews'
 import NavBar from './components/nav/NavBar'
-import Footer from './components/footer/Footer'
+import Foot from './components/footer/Footer'
+import { Layout } from 'antd'
 // import API from './modules/dbCalls'
 
+const { Header, Content, Footer } = Layout
+
 class Wag extends Component {
+
+
   state = {
-    userLoggedIn: false,
-    userisOwner: false
+    userLoggedIn: true,
+    userIsOwner: true
   }
 
   // login = (username, password, userType) => {
@@ -28,11 +33,17 @@ class Wag extends Component {
 
   render() {
     return (
-      <div>
-        <NavBar loggedIn={this.state.userLoggedIn} />
-        {this.state.userisOwner ? (<OwnerViews userLoggedIn={this.state.userLoggedIn} />) : (<WalkerViews userLoggedIn={this.state.userLoggedIn} />)}
-        <Footer />
-      </div>
+      <Layout className="layout">
+        <Header>
+          <NavBar userLoggedIn={this.state.userLoggedIn} userIsOwner={this.state.userIsOwner} />
+        </Header>
+        <Content>
+          {this.state.userIsOwner ? (<OwnerViews userLoggedIn={this.state.userLoggedIn} />) : (<WalkerViews userLoggedIn={this.state.userLoggedIn} />)}
+        </Content>
+        <Footer>
+          <Foot />
+        </Footer>
+      </Layout>
     )
   }
 }

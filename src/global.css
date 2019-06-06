@@ -1,0 +1,10 @@
+@import '~antd/dist/antd.css';
+
+:root {
+    --primary: #324759;
+    --primary-v: #4F6273;
+    --secondary: #72828C;
+    --secondary-v: #535F66;
+    --surface: #B0B9BF;
+    --background: #ebeef0;
+}
