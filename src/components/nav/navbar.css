@@ -1,0 +1,20 @@
+
+#topNav {
+    display: flex;
+    justify-content: space-between;
+}
+
+#logoContainer img {
+    max-height: 200px;
+    margin-top: -45px;
+}
+
+#linksContainer {
+    margin-top: 20px;
+    margin-right: 6vw;
+}
+
+.nav-divider {
+    border-left: 1px solid rgba(0, 0, 0, 0.65);
+    height: 30px;
+}
