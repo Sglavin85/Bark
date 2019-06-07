@@ -21,19 +21,22 @@ export default class OwnerLinks extends Component {
                 selectedKeys={[this.state.current]}
                 mode="horizontal">
                 <Menu.Item key="home">
-                    <Link className="nav-link" to="/">Home</Link>
+                    <Link className="nav-link" to="/walker-home">Home</Link>
                 </Menu.Item>
                 <Menu.Item key="myDogs">
-                    <Link className="nav-link" to="owner-dogs">My Profile</Link>
+                    <Link className="nav-link" to="/walker-profile">My Profile</Link>
                 </Menu.Item>
                 <Menu.Item key="myRoutes">
-                    <Link className="nav-link" to="owner-routes">My Calendar</Link>
+                    <Link className="nav-link" to="/walker-calendar">My Calendar</Link>
                 </Menu.Item>
                 <Menu.Item key="walkers">
-                    <Link className="nav-link" to="walkers">Walks</Link>
+                    <Link className="nav-link" to="/walks">Walks</Link>
                 </Menu.Item>
                 <Menu.Item key="account">
-                    <Link className="nav-link" to="owner-account">Account</Link>
+                    <Link className="nav-link" to="/walker-account">Account</Link>
+                </Menu.Item>
+                <Menu.Item key="logOut">
+                    <Link className="nav-link" to="/login">Log Out</Link>
                 </Menu.Item>
             </Menu>
         )

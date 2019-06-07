@@ -1,0 +1,16 @@
+h1 {
+    text-align: center
+}
+
+.selectButtons {
+    margin-bottom: 25px;
+}
+
+#loginButtons {
+    margin-left: 30%;
+}
+
+.login {
+    margin-top: 25px;
+    color: #324759;
+}
