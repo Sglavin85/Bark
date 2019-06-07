@@ -19,19 +19,19 @@ export default class OwnerLinks extends Component {
         return (
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
                 <Menu.Item key="home">
-                    <Link className="nav-link" to="/">Home</Link>
+                    <Link className="nav-link" to="/owner-home">Home</Link>
                 </Menu.Item>
                 <Menu.Item key="myDogs">
-                    <Link className="nav-link" to="owner-dogs">My Dogs</Link>
+                    <Link className="nav-link" to="/owner-dogs">My Dogs</Link>
                 </Menu.Item>
                 <Menu.Item key="myRoutes">
-                    <Link className="nav-link" to="owner-routes">My Routes</Link>
+                    <Link className="nav-link" to="/owner-routes">My Routes</Link>
                 </Menu.Item>
                 <Menu.Item key="walkers">
-                    <Link className="nav-link" to="walkers">Walkers</Link>
+                    <Link className="nav-link" to="/walkers">Walkers</Link>
                 </Menu.Item>
                 <Menu.Item key="account">
-                    <Link className="nav-link" to="owner-account">Account</Link>
+                    <Link className="nav-link" to="/owner-account">Account</Link>
                 </Menu.Item>
             </Menu>
         )
