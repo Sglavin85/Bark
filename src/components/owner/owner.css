@@ -1,0 +1,23 @@
+.dogButton {
+    padding-top: 20px;
+    margin: auto;
+}
+
+.Line {
+    height: 2px;
+    background-color: #324759;
+    width: 90%;
+    margin: 20px auto;
+}
+
+.firstHR {
+    height: 2px;
+    background-color: #324759;
+    width: 100%;
+    margin-bottom: 20px;
+    align-self: center;
+}
+
+.homeTypeFace {
+    font-size: xx-large;
+}

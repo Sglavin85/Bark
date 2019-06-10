@@ -33,6 +33,9 @@ export default class OwnerLinks extends Component {
                 <Menu.Item key="account">
                     <Link className="nav-link" to="/owner-account">Account</Link>
                 </Menu.Item>
+                <Menu.Item key="logout">
+                    <Link className="nav-link" to="/auth/login" onClick={this.props.logout}>Logout</Link>
+                </Menu.Item>
             </Menu>
         )
     }

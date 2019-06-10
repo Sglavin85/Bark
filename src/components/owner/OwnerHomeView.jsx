@@ -1,36 +1,56 @@
 import React, { Component } from 'react'
 import API from '../../modules/API'
-import { Row, Col } from 'antd'
+import { Row, Col, Button } from 'antd'
 import DogCard from '../dogs/DogCard'
+import './owner.css'
+import WalkerCard from '../walker/WalkerCard'
 
 export default class OwnerHomeView extends Component {
     state = {
         user: {},
-        dogs: []
+        dogs: [],
+        walkers: []
     }
 
     componentDidMount() {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
-        console.log(currentUser)
         API.getUserDogs(currentUser).then(userDogs => {
             const dogArray = Object.values(userDogs)
             this.setState({ dogs: dogArray })
         })
         this.setState({ user: currentUser })
+
+        API.getWalkers().then(walkers => {
+            const walkerArray = Object.values(walkers)
+            this.setState({ walkers: walkerArray })
+        })
     }
 
     makeDogCards = dogs => {
         if (this.state.dogs.length > 0) {
             const dogCards = dogs.map(dog => (
-                <Col>
+                <Col key={dog.id}>
                     <DogCard
-                        key={dog.id}
                         dog={dog}
+                        key={dog.id}
                     />
                 </Col>)
 
             );
             return dogCards
+        }
+    }
+
+    makeWalkerCards = walkers => {
+
+        if (this.state.dogs.length > 0) {
+            const walkerCards = walkers.map(walker => (
+                <Col key={walker.uid}>
+                    <WalkerCard walker={walker} />
+                </Col>
+            )
+            )
+            return walkerCards
         }
     }
 
@@ -42,13 +62,28 @@ export default class OwnerHomeView extends Component {
                 <Row type="flex" justify="center">
                     <Col>
                         <h1 className="homeTypeFace">Hi {firstName}, Welcome Back</h1>
-                        <div className="firstHR"><hr /></div>
+                        <div className="firstHR"></div>
                         <Row>
                             {this.makeDogCards(this.state.dogs)}
                         </Row>
+                        <Row type="flex" justify="center">
+                            <Col>
+                                <div className="dogButton">
+                                    <Button href='/owners/dogs' size="large" type="primary">Manage Dogs</Button>
+                                </div>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
-
+                <div className="Line"></div>
+                <Row type="flex" justify="center">
+                    <Col>
+                        <h1 className="homeTypeFace">Featured Walkers</h1>
+                        <Row type="flex" justify="center">
+                            {this.makeWalkerCards(this.state.walkers)}
+                        </Row>
+                    </Col>
+                </Row>
             </>
         )
     }
