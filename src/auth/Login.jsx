@@ -28,8 +28,7 @@ export default class Login extends Component {
         login(this.state.email, this.state.password, accountType)
             .then((user) => {
                 if (!!user) {
-                    this.props.login(user);
-                    this.props.history.push(`/${accountType}/home`);
+                    this.props.login(user, accountType);
                 }
             });
     }

@@ -24,10 +24,12 @@ class Wag extends Component {
   }
 
   login = (user, accountType) => {
-    this.setState({ user: user })
-    this.setState({ userLoggedIn: true })
+    this.setState({ userLoggedIn: true, user: user })
     if (accountType === "owners") {
       this.setState({ userIsOwner: true })
+      this.props.history.push(`/owners/home`)
+    } else {
+      this.props.history.push(`/walkers/home`)
     }
   }
 
@@ -43,18 +45,18 @@ class Wag extends Component {
           <Route path="/auth" render={(props) => {
             return <AuthViews {...props}
               loginState={this.props.loginState}
-              login={this.props.login}
+              login={this.login}
             />
           }}
           />
 
           <Route path="/owners" render={(props) => {
-            return <OwnerViews userLoggedIn={props.userLoggedIn} />
+            return <OwnerViews user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
           }}
           />
 
           <Route path="/walkers" render={(props) => {
-            return <WalkerViews userLoggedIn={props.userLoggedIn} />
+            return <WalkerViews user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
           }}
           />
 

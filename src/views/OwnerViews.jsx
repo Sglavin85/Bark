@@ -8,14 +8,16 @@ import Walkers from '../components/owner/Walkers'
 import OwnerAccount from '../components/owner/OwnerAccount'
 
 class OwnerViews extends Component {
+    isAuthenticated = () => sessionStorage.getItem("user") !== null
+
+
 
     render() {
         return (
             <>
                 <Route exact path="/owners/home" render={(props) => {
-                    debugger
-                    if (this.props.userLoggedIn === true) {
-                        return <OwnerHomeView {...props} />
+                    if (this.isAuthenticated()) {
+                        return <OwnerHomeView {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
@@ -23,8 +25,8 @@ class OwnerViews extends Component {
                 }}
                 />
                 <Route exact path="/owners/dogs" render={(props) => {
-                    if (this.props.userLoggedIn === true) {
-                        return <OwnerDogs {...props} />
+                    if (this.isAuthenticated()) {
+                        return <OwnerDogs {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
@@ -33,8 +35,8 @@ class OwnerViews extends Component {
                 />
                 <Route exact path="/owners/routes" render={(props) => {
                     debugger
-                    if (this.props.userLoggedIn === true) {
-                        return <OwnerRoutes {...props} />
+                    if (this.isAuthenticated()) {
+                        return <OwnerRoutes {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
@@ -42,8 +44,8 @@ class OwnerViews extends Component {
                 }}
                 />
                 <Route exact path="/owners/walkers" render={(props) => {
-                    if (this.props.userLoggedIn === true) {
-                        return <Walkers {...props} />
+                    if (this.isAuthenticated()) {
+                        return <Walkers {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
@@ -51,8 +53,8 @@ class OwnerViews extends Component {
                 }}
                 />
                 <Route exact path="/owners/account" render={(props) => {
-                    if (this.props.userLoggedIn === true) {
-                        return <OwnerAccount {...props} />
+                    if (this.isAuthenticated()) {
+                        return <OwnerAccount {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />

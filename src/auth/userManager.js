@@ -64,7 +64,6 @@ export const logout = () => {
 }
 
 export const registerWithFirebase = (email, password) => {
-    debugger
     return firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(data => {
             return data.user.uid
