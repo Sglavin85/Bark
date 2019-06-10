@@ -33,13 +33,23 @@ class Wag extends Component {
     }
   }
 
+  logout = () => {
+    sessionStorage.removeItem("user")
+    this.setState({
+      userLoggedIn: false,
+      userIsOwner: false,
+      user: null
+    })
+    this.props.history.push(`auth/login`)
+  }
+
 
   render() {
     return (
       <Layout className="layout">
         <div id="topStrip"></div>
         <Header>
-          <NavBar userLoggedIn={this.state.userLoggedIn} userIsOwner={this.state.userIsOwner} />
+          <NavBar logout={this.logout} userLoggedIn={this.state.userLoggedIn} userIsOwner={this.state.userIsOwner} />
         </Header>
         <Content>
           <Route path="/auth" render={(props) => {

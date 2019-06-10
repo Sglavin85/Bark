@@ -7,6 +7,9 @@ const API = {
     },
     editUserDogs: function (dog) {
 
+    },
+    getWalkers: function () {
+        return fetch(`${url}/walkers.json`).then(response => response.json())
     }
 }
 
