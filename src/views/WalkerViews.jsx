@@ -16,47 +16,47 @@ class WalkerViews extends Component {
     render() {
         return (
             <>
-                <Route path="/walkers-home" render={(props) => {
+                <Route exact path="/walkers/home" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <WalkerHomeView {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/walker-profile" render={(props) => {
+                <Route exact path="/walkers/profile" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <WalkerDetails {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/walker-calendar" render={(props) => {
+                <Route exact path="/walkers/calendar" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <WalkerCalendar {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/walks" render={(props) => {
+                <Route exact path="/walkers/walks" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <Walks {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/walker-account" render={(props) => {
+                <Route exact path="/walkers/account" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <WalkerAccount {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}

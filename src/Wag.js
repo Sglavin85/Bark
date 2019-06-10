@@ -3,8 +3,14 @@ import { withRouter } from 'react-router'
 import NavBar from './components/nav/NavBar'
 import Foot from './components/footer/Footer'
 import { Layout } from 'antd'
-import ViewLogic from './views/ViewLogic';
+import ViewLogic from './views/ViewLogic'
 import { logout } from './auth/userManager'
+import { Route } from 'react-router-dom'
+import AuthViews from './views/AuthViews';
+import WalkerViews from './views/WalkerViews';
+import OwnerViews from './views/OwnerViews'
+
+
 
 const { Header, Content, Footer } = Layout
 
@@ -34,7 +40,25 @@ class Wag extends Component {
           <NavBar userLoggedIn={this.state.userLoggedIn} userIsOwner={this.state.userIsOwner} />
         </Header>
         <Content>
-          <ViewLogic login={this.login} userLoggedIn={this.state.userLoggedIn} userIsOwner={this.state.userIsOwner} />
+          <Route path="/auth" render={(props) => {
+            return <AuthViews {...props}
+              loginState={this.props.loginState}
+              login={this.props.login}
+            />
+          }}
+          />
+
+          <Route path="/owners" render={(props) => {
+            return <OwnerViews userLoggedIn={props.userLoggedIn} />
+          }}
+          />
+
+          <Route path="/walkers" render={(props) => {
+            return <WalkerViews userLoggedIn={props.userLoggedIn} />
+          }}
+          />
+
+
         </Content>
         <Footer>
           <Foot />
