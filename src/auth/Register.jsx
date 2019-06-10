@@ -41,17 +41,17 @@ export default class Register extends Component {
         this.setState({ state: evt })
     }
 
-    submit = () => {
-        console.log("test", this.state.accountType)
+    submit = (evt) => {
+        evt.preventDefault()
         const accountType = this.state.accountType
         registerUser(this.state, accountType)
             .then(newUser => {
                 this.props.login(newUser, accountType)
-                this.props.history.push(`/${accountType}-home`)
+                this.props.history.push(`/${accountType}/home`)
             })
     }
 
-
+    // type="password"
     render() {
         return (
             <Row type="flex" justify="center">
@@ -66,14 +66,14 @@ export default class Register extends Component {
                     </Row>
                     <Row type="flex" justify="center">
                         <Col span={24} offset={3}>
-                            <Form onSubmit={this.handleSubmit} className="register-form" layout="vertical" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} >
+                            <Form className="register-form" layout="vertical" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} >
 
 
                                 <Form.Item label="E-Mail: ">
                                     <Input id="email" onChange={this.handleFieldChange} />
                                 </Form.Item>
                                 <Form.Item label="Password: ">
-                                    <Input type="password" id="password" onChange={this.handleFieldChange} />
+                                    <Input id="password" onChange={this.handleFieldChange} />
                                 </Form.Item>
                                 <Form.Item label="First Name: ">
                                     <Input id="firstName" onChange={this.handleFieldChange} />
@@ -81,9 +81,7 @@ export default class Register extends Component {
                                 <Form.Item label="Last Name: ">
                                     <Input id="lastName" onChange={this.handleFieldChange} />
                                 </Form.Item>
-                                <Form.Item label="Birthday: ">
-                                    <DatePicker defaultValue={moment().subtract(18, "years")} className="birthday" onChange={this.handleDateChange} />
-                                </Form.Item>
+
                                 <Form.Item label="Address: ">
                                     <Input id="address" onChange={this.handleFieldChange} />
                                 </Form.Item>
@@ -148,6 +146,9 @@ export default class Register extends Component {
                                 <Form.Item label="Zip: ">
                                     <Input id="zip" onChange={this.handleFieldChange} />
                                 </Form.Item>
+                                <Form.Item label="Birthday: ">
+                                    <DatePicker defaultValue={moment().subtract(18, "years")} className="birthday" onChange={this.handleDateChange} />
+                                </Form.Item>
                                 <Row type="flex" justify="center" className="selectButtons">
                                     <Col span={24} offset={6}>
                                         <Form.Item>
@@ -163,7 +164,7 @@ export default class Register extends Component {
                                                     <span className="register">Go back to </span>
 
 
-                                                    <Link className="reg-link" to="/login">Log-In</Link>
+                                                    <Link className="reg-link" to="/auth/login">Log-In</Link>
                                                 </Col>
                                             </Row>
                                         </Form.Item>

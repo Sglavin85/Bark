@@ -9,52 +9,52 @@ import OwnerAccount from '../components/owner/OwnerAccount'
 
 class OwnerViews extends Component {
 
-    isAuthenticated = () => sessionStorage.getItem("credentials") !== null
-
     render() {
         return (
             <>
-                <Route path="/owners-home" render={(props) => {
-                    if (this.isAuthenticated()) {
+                <Route exact path="/owners/home" render={(props) => {
+                    debugger
+                    if (this.props.userLoggedIn === true) {
                         return <OwnerHomeView {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/owner-dogs" render={(props) => {
-                    if (this.isAuthenticated()) {
+                <Route exact path="/owners/dogs" render={(props) => {
+                    if (this.props.userLoggedIn === true) {
                         return <OwnerDogs {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/owner-routes" render={(props) => {
-                    if (this.isAuthenticated()) {
+                <Route exact path="/owners/routes" render={(props) => {
+                    debugger
+                    if (this.props.userLoggedIn === true) {
                         return <OwnerRoutes {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/walkers" render={(props) => {
-                    if (this.isAuthenticated()) {
+                <Route exact path="/owners/walkers" render={(props) => {
+                    if (this.props.userLoggedIn === true) {
                         return <Walkers {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
-                <Route path="/owner-account" render={(props) => {
-                    if (this.isAuthenticated()) {
+                <Route exact path="/owners/account" render={(props) => {
+                    if (this.props.userLoggedIn === true) {
                         return <OwnerAccount {...props} />
                     } else {
-                        return <Redirect to="/login"
+                        return <Redirect to="/auth/login"
                         />
                     }
                 }}

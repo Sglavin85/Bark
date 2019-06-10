@@ -1,19 +1,28 @@
 import React from 'react'
 import OwnerViews from './OwnerViews'
 import WalkerViews from './WalkerViews'
-import AuthViews from './AuthViews'
+import { Redirect } from 'react-router'
+import { Route } from 'react-router-dom'
+import { withRouter } from 'react-router'
+
 
 const ViewLogic = (props) => {
-
     if (props.userLoggedIn === true) {
+
         if (props.userIsOwner === true) {
-            return <OwnerViews userLoggedIn={props.userLoggedIn} />
+            return <Route path="/owners" render={(props) => {
+                return <OwnerViews userLoggedIn={props.userLoggedIn} />
+            }}
+            />
         } else {
-            return <WalkerViews userLoggedIn={props.userLoggedIn} />
+            return <Route path="/walkers" render={(props) => {
+                return <WalkerViews userLoggedIn={props.userLoggedIn} />
+            }}
+            />
         }
     } else {
-        return <AuthViews {...props} login={props.login} />
+        return <Redirect to='auth/login' />
     }
 }
 
-export default ViewLogic
+export default withRouter(ViewLogic)

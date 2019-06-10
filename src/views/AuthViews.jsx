@@ -2,19 +2,20 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import Login from '../auth/Login'
 import Register from '../auth/Register'
+import { withRouter } from 'react-router'
 
-export default class AuthViews extends Component {
+class AuthViews extends Component {
     render() {
         return (
             <>
-                <Route path="/login" render={(props) => {
+                <Route exact path="/auth/login" render={(props) => {
                     return <Login {...props}
                         loginState={this.props.loginState}
                         login={this.props.login}
                     />
                 }}
                 />
-                <Route path="/register" render={(props) => {
+                <Route exact path="/auth/register" render={(props) => {
                     return <Register {...props}
                         loginState={this.props.loginState}
                         login={this.props.login}
@@ -25,3 +26,5 @@ export default class AuthViews extends Component {
         )
     }
 }
+
+export default withRouter(AuthViews)

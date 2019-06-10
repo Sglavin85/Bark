@@ -23,23 +23,14 @@ export const registerUser = (user, accountType) => {
 export const saveUserToFirebaseServer = (user, accountType) => {
     const userToAdd = user
     delete userToAdd.accountType
-    return fetch(`${url}/${accountType}.json`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userToAdd)
-    })
-        .then(res => res.json())
-        .then(newUser => {
-            setUserInSessionStorage(newUser);
-            return newUser;
-        });
+    firebase.database().ref(`${accountType}`).child(`${user.uid}`).set(userToAdd);
+    setUserInSessionStorage(userToAdd);
+    return userToAdd;
 }
 
 
 export const getUser = (userId, accountType) => {
-    return fetch(`${url}/${accountType}/${userId}`)
+    return fetch(`${url}/${accountType}/${userId}.json`)
         .then(res => res.json());
 }
 
@@ -47,17 +38,16 @@ const loginWithFirebase = (email, password) => {
     return firebase.auth().signInWithEmailAndPassword(email, password)
 }
 
-export const login = (email, password) => {
+export const login = (email, password, accountType) => {
+
     return loginWithFirebase(email, password)
-        .then(firebaseID => {
-            getUser(firebaseID)
-                .then(user => {
-                    setUserInSessionStorage(user);
-                    return user;
-                })
-                .catch(function (_error) {
-                    alert("Username and password did not match")
-                })
+        .then(credentials => getUser(credentials.user.uid, accountType))
+        .then(user => {
+            setUserInSessionStorage(user);
+            return user;
+        })
+        .catch(function (_error) {
+            alert("Username and password did not match")
         })
 }
 
@@ -74,6 +64,7 @@ export const logout = () => {
 }
 
 export const registerWithFirebase = (email, password) => {
+    debugger
     return firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(data => {
             return data.user.uid
