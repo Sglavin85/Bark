@@ -30,7 +30,7 @@ export default class NavBar extends Component {
                         <div id="logoContainer" className={this.state.logo}>
                             <img src={logo} alt="logo" className="nav-logo" />
                         </div>
-                        {this.props.userLoggedIn ? (<div id="linksContainer">
+                        {this.props.user ? (<div id="linksContainer">
                             {this.props.userIsOwner ? <OwnerLinks logout={this.props.logout} /> : <WalkerLinks logout={this.props.logout} />}
                         </div>) : null}
                     </div>

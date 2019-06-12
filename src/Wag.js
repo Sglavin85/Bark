@@ -3,8 +3,6 @@ import { withRouter } from 'react-router'
 import NavBar from './components/nav/NavBar'
 import Foot from './components/footer/Footer'
 import { Layout } from 'antd'
-import ViewLogic from './views/ViewLogic'
-import { logout } from './auth/userManager'
 import { Route } from 'react-router-dom'
 import AuthViews from './views/AuthViews';
 import WalkerViews from './views/WalkerViews';
@@ -18,10 +16,10 @@ class Wag extends Component {
 
 
   state = {
-    userLoggedIn: false,
-    userIsOwner: false,
-    user: null
+    userIsOwner: sessionStorage.getItem('accountType') === 'owners',
+    user: JSON.parse(sessionStorage.getItem('user'))
   }
+
 
   login = (user, accountType) => {
     this.setState({ userLoggedIn: true, user: user })
@@ -49,7 +47,7 @@ class Wag extends Component {
       <Layout className="layout">
         <div id="topStrip"></div>
         <Header>
-          <NavBar logout={this.logout} userLoggedIn={this.state.userLoggedIn} userIsOwner={this.state.userIsOwner} />
+          <NavBar logout={this.logout} user={this.state.user} userIsOwner={this.state.userIsOwner} />
         </Header>
         <Content>
           <Route path="/auth" render={(props) => {
