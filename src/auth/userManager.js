@@ -1,10 +1,11 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth'
+import 'firebase/auth';
 
 const url = 'https://wag-app-d212c.firebaseio.com';
 
-const setUserInSessionStorage = (user) => {
+const setUserInSessionStorage = (user, accountType) => {
     sessionStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('accountType', accountType)
 }
 
 export const registerUser = (user, accountType) => {
@@ -15,7 +16,7 @@ export const registerUser = (user, accountType) => {
             return saveUserToFirebaseServer(user, accountType)
         })
         .then(newUserFromFireBaseServer => {
-            setUserInSessionStorage(newUserFromFireBaseServer)
+            setUserInSessionStorage(newUserFromFireBaseServer, accountType)
             return newUserFromFireBaseServer;
         })
 }
@@ -24,7 +25,7 @@ export const saveUserToFirebaseServer = (user, accountType) => {
     const userToAdd = user
     delete userToAdd.accountType
     firebase.database().ref(`${accountType}`).child(`${user.uid}`).set(userToAdd);
-    setUserInSessionStorage(userToAdd);
+    setUserInSessionStorage(userToAdd, accountType);
     return userToAdd;
 }
 
@@ -43,7 +44,7 @@ export const login = (email, password, accountType) => {
     return loginWithFirebase(email, password)
         .then(credentials => getUser(credentials.user.uid, accountType))
         .then(user => {
-            setUserInSessionStorage(user);
+            setUserInSessionStorage(user, accountType);
             return user;
         })
         .catch(function (_error) {

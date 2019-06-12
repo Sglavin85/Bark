@@ -9,7 +9,8 @@ export default class OwnerHomeView extends Component {
     state = {
         user: {},
         dogs: [],
-        walkers: []
+        walkers: [],
+        dogPage: false
     }
 
     componentDidMount() {
@@ -28,11 +29,12 @@ export default class OwnerHomeView extends Component {
 
     makeDogCards = dogs => {
         if (this.state.dogs.length > 0) {
-            const dogCards = dogs.map(dog => (
-                <Col key={dog.id}>
+            const dogCards = dogs.map((dog, index) => (
+                <Col key={index}>
                     <DogCard
+                        dogPage={this.state.dogPage}
                         dog={dog}
-                        key={dog.id}
+                        key={index}
                     />
                 </Col>)
 
