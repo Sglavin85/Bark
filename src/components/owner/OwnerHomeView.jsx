@@ -10,7 +10,8 @@ export default class OwnerHomeView extends Component {
         user: {},
         dogs: [],
         walkers: [],
-        dogPage: false
+        dogPage: false,
+        isWalkerPage: false
     }
 
     componentDidMount() {
@@ -20,7 +21,6 @@ export default class OwnerHomeView extends Component {
             this.setState({ dogs: dogArray })
         })
         this.setState({ user: currentUser })
-
         API.getWalkers().then(walkers => {
             const walkerArray = Object.values(walkers)
             this.setState({ walkers: walkerArray })
@@ -44,11 +44,15 @@ export default class OwnerHomeView extends Component {
     }
 
     makeWalkerCards = walkers => {
-
-        if (this.state.dogs.length > 0) {
-            const walkerCards = walkers.map(walker => (
+        if (this.state.walkers.length > 0) {
+            const sortedWalkers = walkers.sort(function (a, b) {
+                return a - b;
+            }, walkers.rating)
+            const topWalkers = sortedWalkers.reverse().slice(0, 3)
+            const walkerCards = topWalkers.map(walker => (
                 <Col key={walker.uid}>
-                    <WalkerCard walker={walker} />
+                    <WalkerCard walker={walker}
+                        isWalkerPage={this.state.isWalkerPage} />
                 </Col>
             )
             )
@@ -65,7 +69,7 @@ export default class OwnerHomeView extends Component {
                     <Col>
                         <h1 className="homeTypeFace">Hi {firstName}, Welcome Back</h1>
                         <div className="firstHR"></div>
-                        <Row>
+                        <Row type="flex" justify="center">
                             {this.makeDogCards(this.state.dogs)}
                         </Row>
                         <Row type="flex" justify="center">

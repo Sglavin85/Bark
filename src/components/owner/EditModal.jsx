@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Modal, Form, Input, Button, Select, Upload, message, Icon } from 'antd'
+import { Row, Col, Modal, Form, Input, Button, Select } from 'antd'
 import '../../auth/auth.css'
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
@@ -57,6 +57,7 @@ export default class CreateModal extends Component {
                 .then(async (url) => {
                     dogObj.image = url
                     await API.editUserDogs(dogObj)
+
                     await this.props.update()
                     this.props.cancel("editModalVis")
                 })

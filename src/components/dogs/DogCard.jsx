@@ -15,8 +15,11 @@ export default class DogCard extends Component {
     }
 
     componentDidMount() {
+
         if (this.props.dog.gender === "female") {
-            this.setState({ isMale: "woman" })
+            this.setState({ dogGender: "woman" })
+        } else {
+            this.setState({ dogGender: "man" })
         }
     }
 
@@ -47,9 +50,8 @@ export default class DogCard extends Component {
             okText: 'Delete',
             okType: 'danger',
             cancelText: 'Cancel',
-            onOk() {
-                this.handleDeleteSubmit(this.props.dog.id)
-            },
+            onOk: () => this.handleDeleteSubmit(this.props.dog.id)
+            ,
             onCancel() {
             },
         });
@@ -58,13 +60,14 @@ export default class DogCard extends Component {
 
 
     render() {
+        const cardImg = { backgroundImage: `url(${this.props.dog.image})` }
         return (
             <div className="cardDiv">
                 <Card hoverable
                     style={{ width: 400 }}
                     actions={this.props.dogPage ? [<Icon theme="filled" type="edit" onClick={() => this.modal("editModalVis")} />, <Icon theme="filled" type="delete" onClick={this.showDeleteConfirm} />] : []}
                     cover={
-                        <img src={this.props.dog.image} alt={this.props.dog.name} />
+                        <div className="backgroundImg" style={cardImg}></div>
                     }
                 >
                     <div className="cardLine"></div>
@@ -74,13 +77,6 @@ export default class DogCard extends Component {
                     <h4>Temperament: {this.props.dog.temperment}</h4>
                     <p>Notes: {this.props.dog.notes}</p>
                 </Card>
-                {/* 
-                {this.state.deleteModalVis ? <DeleteModal
-                    vis={this.state.deleteModalVis}
-                    cancel={this.cancelModal}
-                    uid={this.props.uid}
-                    update={this.props.update}
-                /> : null} */}
 
                 {this.state.editModalVis ? <EditModal
                     dog={this.props.dog}

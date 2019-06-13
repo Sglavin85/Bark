@@ -21,3 +21,10 @@
 .homeTypeFace {
     font-size: xx-large;
 }
+
+.addCard {
+    background-size: cover;
+    background-position: center;
+    height: 650px;
+    background-repeat: no-repeat;
+}

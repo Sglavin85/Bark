@@ -1,0 +1,40 @@
+.walkerImg {
+    background-size: cover;
+    background-position: center;
+    width: 400px;
+    background-repeat: no-repeat;
+}
+
+.detailsLine {
+    height: 2px;
+    background-color: #324759;
+    width: 90%;
+    margin-bottom: 20px;
+    margin-top: -40px;
+}
+
+.hr {
+    height: 2px;
+    background-color: #324759;
+    width: 100%;
+    margin-bottom: 20px;
+    align-self: center;
+}
+
+h1 {
+    font-size: xx-large;
+    color: #324759;
+
+}
+
+.btnPush {
+    margin: 10px 0 20px 0;
+}
+
+.ratingCount {
+ padding-top: 6px;
+}
+
+.detailsImg {
+    margin-top: 10px;
+}
