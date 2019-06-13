@@ -11,26 +11,22 @@ const { Option } = Select;
 export default class Register extends Component {
     state = {
         email: "",
-        password: "",
         firstName: "",
         lastName: "",
         address: "",
         city: "",
         state: "",
         zip: "",
-        image: ""
     }
 
     componentDidMount = () => {
         this.setState({
-            password: this.props.walker.password,
             firstName: this.props.walker.firstName,
             lastName: this.props.walker.lastName,
             address: this.props.walker.address,
             city: this.props.walker.city,
             state: this.props.walker.state,
-            zip: this.props.walker.zip,
-            image: this.props.walker.image
+            zip: this.props.walker.zip
         })
     }
 
@@ -54,14 +50,17 @@ export default class Register extends Component {
                 .then(data => data.ref.getDownloadURL())
                 .then(async (url) => {
                     walker.image = url
-                    await API.editWalkerProfile(walker)
-                    await this.props.update()
-                    this.props.cancel("editModalVis")
                 })
         }
+
+        await API.editWalkerProfile(this.props.walker.uid, walker)
+        await this.props.update()
+        this.props.cancel("editModalVis")
+
     }
 
     render() {
+        console.log('1', this.props.walker.uid)
         return (
             <Modal
                 visible={this.props.vis}
@@ -82,10 +81,13 @@ export default class Register extends Component {
 
                 ]}>
                 <Row type="flex" justify="center">
-                    <Col span={8}>        <h1 className="login">Register</h1>
+                    <Col span={14}>        <h1 className="login">Register</h1>
                         <Row type="flex" justify="center">
                             <Col span={24} offset={3}>
-                                <Form className="register-form" layout="vertical" labelCol={{ span: 8 }} wrapperCol={{ span: 24 }} >
+                                <Form className="register-form" layout="vertical" labelCol={{ span: 10 }} wrapperCol={{ span: 24 }} >
+                                    <Form.Item label="Upload a picture: ">
+                                        <Input id="picture" type="file" onChange={(e) => this.setState({ image: e.target.files[0] })} />
+                                    </Form.Item>
                                     <Form.Item label="First Name: ">
                                         <Input value={this.state.firstName} id="firstName" onChange={this.handleFieldChange} />
                                     </Form.Item>

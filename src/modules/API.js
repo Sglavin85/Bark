@@ -24,8 +24,13 @@ const API = {
     getWalkers: function () {
         return fetch(`${url}/walkers.json`).then(response => response.json())
     },
-    getWalkerReviews: function (walker) {
-        return fetch(`${url}/walkerReviews.json?orderBy="walkerId"&equalTo="${walker}"&print=pretty`).then(response => response.json())
+    getWalkerReviews: function (walkerUid) {
+        return fetch(`${url}/walkerReviews.json?orderBy="walkerId"&equalTo="${walkerUid}"&print=pretty`)
+            .then(response => response.json())
+            .then(reviews => {
+                const reviewsArray = Object.values(reviews)
+                return reviewsArray
+            })
     },
     getOwner: function (ownerId) {
         return fetch(`${url}/owners/${ownerId}.json`).then(response => response.json())
@@ -40,12 +45,12 @@ const API = {
     getAllDogs: function () {
         return fetch(`${url}/animals.json`).then(response => response.json())
     },
-    editWalkerProfile: function (walker) {
-        JSON.parse(JSON.stringify(walker))
-        return firebase.database().ref(`waklers/${walker.uid}`).update(walker)
+    editWalkerProfile: function (uid, obj) {
+        return firebase.database().ref(`walkers/${uid}`).update(obj)
     },
-    getWalker: function (walkerId) {
-        return fetch(`${url}/walkers/${walkerId}.json`).then(response => response.json())
+    getWalker: function (uid) {
+        return fetch(`${url}/walkers/${uid}.json`)
+            .then(response => response.json())
     }
 }
 

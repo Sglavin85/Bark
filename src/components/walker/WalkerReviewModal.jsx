@@ -38,6 +38,14 @@ export default class WalkerReviewCard extends Component {
 
     }
 
+    newRatingAvg = (userObj) => {
+        const reviews = this.props.reviews
+        reviews.push(userObj)
+        const ratingSum = reviews.reduce((acc, { rating }) => acc + rating, 0)
+        const avgRating = ratingSum / reviews.length
+        return Math.ceil(avgRating * 2) / 2
+    }
+
     handleFieldChange = (e) => {
         const stateToChange = {};
         stateToChange[e.target.id] = e.target.value;
@@ -45,9 +53,13 @@ export default class WalkerReviewCard extends Component {
     }
 
     handleSubmit = (obj) => {
+        const newAvg = this.newRatingAvg(obj)
         API.addWalkerReview(obj)
-            .then(this.props.update)
-            .then(this.props.cancel)
+            .then(() => {
+                API.editWalkerProfile(obj.walkerId, { rating: newAvg })
+                    .then(this.props.update)
+                    .then(this.props.cancel)
+            })
     }
 
     handleRating = (e) => {

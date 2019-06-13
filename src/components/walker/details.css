@@ -35,6 +35,11 @@ h1 {
  padding-top: 6px;
 }
 
-.detailsImg {
-    margin-top: 10px;
+.walkerImg {
+    background-size: cover;
+    background-position: center;
+    width: 300px;
+    height: 300px;
+    background-repeat: no-repeat;
+    margin-top: 20px;
 }

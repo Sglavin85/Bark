@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Icon, Modal } from 'antd'
+import { Card, Icon, Modal, Button } from 'antd'
 import EditModal from '../owner/EditModal'
 import './card.css'
 import API from '../../modules/API';
@@ -76,6 +76,10 @@ export default class DogCard extends Component {
                     <h3><Icon type={this.state.dogGender} /> {this.props.dog.gender}</h3>
                     <h4>Temperament: {this.props.dog.temperment}</h4>
                     <p>Notes: {this.props.dog.notes}</p>
+                    {this.props.isWalker ? <div className="reviewBtn">
+                        <Button type="primary" onClick={() => {
+                            this.props.history.push(`/walkers/dogs/dog/${this.props.walker.uid}`)
+                        }}>See Details</Button></div> : null}
                 </Card>
 
                 {this.state.editModalVis ? <EditModal
