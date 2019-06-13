@@ -7,3 +7,20 @@
 .cardDiv {
     margin: 0 10px 0 10px;
 }
+
+.reviewBtn {
+    margin-top: 20px;
+}
+
+.backgroundImg {
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    background-repeat: no-repeat;
+}
+
+p {
+    line-height: 1.5em;
+    height: 6em;
+    text-overflow: hidden;
+}

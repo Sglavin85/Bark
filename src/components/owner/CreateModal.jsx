@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Modal, Form, Input, Button, Select, Upload, message, Icon } from 'antd'
+import { Row, Col, Modal, Form, Input, Button, Select } from 'antd'
 import '../../auth/auth.css'
 
 

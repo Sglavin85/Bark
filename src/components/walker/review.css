@@ -1,0 +1,14 @@
+
+.imgContainer {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 20px;
+}
+
+.ratingMover {
+    margin-top: -70px;
+}

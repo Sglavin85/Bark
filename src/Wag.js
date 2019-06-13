@@ -59,12 +59,12 @@ class Wag extends Component {
           />
 
           <Route path="/owners" render={(props) => {
-            return <OwnerViews user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
+            return <OwnerViews {...props} user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
           }}
           />
 
           <Route path="/walkers" render={(props) => {
-            return <WalkerViews user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
+            return <WalkerViews {...props} user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
           }}
           />
 

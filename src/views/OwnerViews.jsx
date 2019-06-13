@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router'
 import { Route, Redirect } from 'react-router-dom'
 import OwnerHomeView from '../components/owner/OwnerHomeView'
 import OwnerDogs from '../components/owner/OwnerDogs'
 import OwnerRoutes from '../components/owner/OwnerRoutes'
-import Walkers from '../components/owner/Walkers'
 import OwnerAccount from '../components/owner/OwnerAccount'
+import OwnerWalkersViews from './OwnerWalkersViews';
 
-class OwnerViews extends Component {
+export default class OwnerViews extends Component {
     isAuthenticated = () => sessionStorage.getItem("user") !== null
 
 
@@ -43,15 +42,16 @@ class OwnerViews extends Component {
                     }
                 }}
                 />
-                <Route exact path="/owners/walkers" render={(props) => {
+                <Route path="/owners/walkers" render={(props) => {
                     if (this.isAuthenticated()) {
-                        return <Walkers {...props} user={this.props.user} />
+                        return <OwnerWalkersViews {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
                     }
                 }}
                 />
+
                 <Route exact path="/owners/account" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <OwnerAccount {...props} user={this.props.user} />
@@ -66,4 +66,4 @@ class OwnerViews extends Component {
     }
 }
 
-export default withRouter(OwnerViews)
+

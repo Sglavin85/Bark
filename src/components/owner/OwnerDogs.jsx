@@ -52,8 +52,8 @@ export default class OwnerDogs extends Component {
             .then(url => {
                 obj.image = url
                 API.addUserDog(obj)
-                    .then(_reply => this.updateDogs())
-                    .then(_reply => this.cancelModal("createModalVis"))
+                this.updateDogs()
+                this.cancelModal("createModalVis")
             })
 
         this.setState({
@@ -91,6 +91,8 @@ export default class OwnerDogs extends Component {
 
     render() {
 
+        const cardImg = { backgroundImage: `url(${logo})` }
+
         const firstName = this.state.user.firstName
         return (
             <>
@@ -104,7 +106,7 @@ export default class OwnerDogs extends Component {
                                 <Card hoverable
                                     style={{ width: 400 }}
                                     cover={
-                                        <img src={logo} alt="Add Dog" />
+                                        <div className="addCard" style={cardImg}></div>
                                     }
 
                                 >
