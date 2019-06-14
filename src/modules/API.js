@@ -14,9 +14,9 @@ const API = {
         dog.id = key
         firebase.database().ref(`animals/${dog.id}`).set(dog)
     },
-    editUserDogs: function (dog) {
+    editUserDogs: function (id, dog) {
         JSON.parse(JSON.stringify(dog))
-        return firebase.database().ref(`animals/${dog.id}`).update(dog)
+        return firebase.database().ref(`animals/${id}`).update(dog)
     },
     deleteUserDog: function (dogId) {
         return firebase.database().ref(`animals/${dogId}`).remove()
@@ -24,8 +24,13 @@ const API = {
     getWalkers: function () {
         return fetch(`${url}/walkers.json`).then(response => response.json())
     },
-    getWalkerReviews: function (walker) {
-        return fetch(`${url}/walkerReviews.json?orderBy="walkerId"&equalTo="${walker}"&print=pretty`).then(response => response.json())
+    getWalkerReviews: function (walkerUid) {
+        return fetch(`${url}/walkerReviews.json?orderBy="walkerId"&equalTo="${walkerUid}"&print=pretty`)
+            .then(response => response.json())
+            .then(reviews => {
+                const reviewsArray = Object.values(reviews)
+                return reviewsArray
+            })
     },
     getOwner: function (ownerId) {
         return fetch(`${url}/owners/${ownerId}.json`).then(response => response.json())
@@ -40,12 +45,30 @@ const API = {
     getAllDogs: function () {
         return fetch(`${url}/animals.json`).then(response => response.json())
     },
-    editWalkerProfile: function (walker) {
-        JSON.parse(JSON.stringify(walker))
-        return firebase.database().ref(`waklers/${walker.uid}`).update(walker)
+    editWalkerProfile: function (uid, obj) {
+        return firebase.database().ref(`walkers/${uid}`).update(obj)
     },
-    getWalker: function (walkerId) {
-        return fetch(`${url}/walkers/${walkerId}.json`).then(response => response.json())
+    getWalker: function (uid) {
+        return fetch(`${url}/walkers/${uid}.json`)
+            .then(response => response.json())
+    },
+    getDogReviews: function (dogId) {
+        return fetch(`${url}/animalReviews.json?orderBy="animalId"&equalTo="${dogId}"&print=pretty`)
+            .then(response => response.json())
+            .then(reviews => {
+                const reviewsArray = Object.values(reviews)
+                return reviewsArray
+            })
+    },
+    getDog: function (dogId) {
+        return fetch(`${url}/animals/${dogId}.json`).then(response => response.json())
+    },
+    addDogReview: function (review) {
+        JSON.parse(JSON.stringify(review))
+        var myRef = firebase.database().ref('animalReviews/').push();
+        var key = myRef.key;
+        review.id = key
+        return firebase.database().ref(`animalReviews/${review.id}`).set(review)
     }
 }
 

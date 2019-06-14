@@ -35,6 +35,20 @@ h1 {
  padding-top: 6px;
 }
 
-.detailsImg {
-    margin-top: 10px;
+.walkerImg {
+    background-size: cover;
+    background-position: center;
+    width: 400px;
+    height: 400px;
+    background-repeat: no-repeat;
+    margin-top: 20px;
+}
+
+.dogImg {
+    background-size: cover;
+    background-position: center;
+    width: 400px;
+    height: 400px;
+    background-repeat: no-repeat;
+    margin-top: 20px;
 }

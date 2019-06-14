@@ -9,11 +9,11 @@ const { TextArea } = Input;
 export default class WalkerReviewCard extends Component {
 
     state = {
-        ownerId: "",
+        animalId: this.props.dog.id,
         reviewImg: "",
-        ownerFirstName: "",
-        ownerLastName: "",
-        walkerId: this.props.walker.uid,
+        walkerFirstName: "",
+        walkerLastName: "",
+        walkerId: "",
         review: "",
         rating: null,
         title: "",
@@ -28,9 +28,9 @@ export default class WalkerReviewCard extends Component {
             day: "2-digit"
         })
         const setState = {
-            ownerId: currentUser.uid,
-            ownerFirstName: currentUser.firstName,
-            ownerLastName: currentUser.lastName,
+            walkerId: currentUser.uid,
+            walkerFirstName: currentUser.firstName,
+            walkerLastName: currentUser.lastName,
             reviewImg: currentUser.image,
             date: newDate
         }
@@ -38,9 +38,9 @@ export default class WalkerReviewCard extends Component {
 
     }
 
-    newRatingAvg = (userObj) => {
+    newRatingAvg = (dogObj) => {
         const reviews = this.props.reviews
-        reviews.push(userObj)
+        reviews.push(dogObj)
         const ratingSum = reviews.reduce((acc, { rating }) => acc + rating, 0)
         const avgRating = ratingSum / reviews.length
         return Math.ceil(avgRating * 2) / 2
@@ -54,9 +54,9 @@ export default class WalkerReviewCard extends Component {
 
     handleSubmit = (obj) => {
         const newAvg = this.newRatingAvg(obj)
-        API.addWalkerReview(obj)
+        API.addDogReview(obj)
             .then(() => {
-                API.editWalkerProfile(obj.walkerId, { rating: newAvg })
+                API.editUserDogs(obj.animalId, { rating: newAvg })
                     .then(this.props.update)
                     .then(this.props.cancel)
             })
@@ -89,7 +89,7 @@ export default class WalkerReviewCard extends Component {
 
                 <Row type="flex" justify="center">
 
-                    <Col span={18}><h1 className="login">Review {this.props.walker.firstName} {this.props.walker.lastName}</h1>
+                    <Col span={18}><h1 className="login">Review {this.props.dog.name}</h1>
                         <Row type="flex" justify="center">
                             <Col>
                                 <h2 className="rating">Rating:</h2>

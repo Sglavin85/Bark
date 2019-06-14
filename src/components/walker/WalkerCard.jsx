@@ -30,12 +30,16 @@ class WalkerCard extends Component {
                         <img src={this.props.walker.image} alt={this.props.walker.firstName} />
                     }
                 >
+                    <Row type="flex" justify="center">
+                        <Col>
+                            <Rate character={<PawIcon />} allowHalf disabled defaultValue={this.props.walker.rating} />
+                        </Col>
+                    </Row>
                     <div className="cardLine"></div>
                     <h2>{this.props.walker.firstName} {this.props.walker.lastName}</h2>
                     <h3>{this.props.walker.city}, {this.props.walker.state}</h3>
                     <h3>Age: {this.getAge(this.props.walker.birthday)}</h3>
                     <p>Bio: {this.props.walker.bio}</p>
-                    <Rate character={<PawIcon />} allowHalf disabled defaultValue={this.props.walker.rating} />
                     <Row type="flex" justify="center">
                         <Col>
                             {this.props.isWalkerPage ? <div className="reviewBtn">

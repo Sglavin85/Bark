@@ -5,6 +5,7 @@ import { PawIcon } from '../../modules/pawprint'
 import API from '../../modules/API'
 import Review from './Review'
 import EditProfileModal from './EditProfileModal'
+import WalkerReviewModal from './WalkerReviewModal'
 
 
 export default class WalkerDetails extends Component {
@@ -12,16 +13,25 @@ export default class WalkerDetails extends Component {
         reviews: [],
         editModalVis: false,
         reviewModalVis: false,
-        isUser: false
+        walker: {}
     }
 
     componentDidMount() {
-        API.getWalkerReviews(this.props.match.params.uid)
-            .then(reviews => {
-                const parsedReviews = Object.values(reviews)
-                this.setState({ reviews: parsedReviews })
-            })
-
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        this.setState({ walker: this.props.walker })
+        if (!!this.props.isUser) {
+            API.getWalkerReviews(user.uid)
+                .then(reviews => {
+                    const parsedReviews = Object.values(reviews)
+                    this.setState({ reviews: parsedReviews })
+                })
+        } else {
+            API.getWalkerReviews(this.props.match.params.uid)
+                .then(reviews => {
+                    const parsedReviews = Object.values(reviews)
+                    this.setState({ reviews: parsedReviews })
+                })
+        }
     }
 
     modal = (modal) => {
@@ -36,8 +46,10 @@ export default class WalkerDetails extends Component {
         API.getWalker(currentUser.uid).then(walker => {
             sessionStorage.removeItem("user")
             sessionStorage.setItem("user", JSON.stringify(walker))
+            let updatedUser = JSON.parse(sessionStorage.getItem("user"))
+            this.setState({ walker: updatedUser })
         })
-            .then(() => this.cancelModal)
+
     }
 
     getAge = (DOB) => {
@@ -61,42 +73,48 @@ export default class WalkerDetails extends Component {
     }
 
     updateDetails = () => {
-        const parsedReviews = API.getWalkerReviews(this.props.walker)
+        return API.getWalkerReviews(this.props.walker.uid)
             .then(reviews => {
                 const reviewsArray = Object.values(reviews)
-                return reviewsArray
+                this.setState({ reviews: reviewsArray })
             })
-        Promise.all(parsedReviews)
-        this.setState({ reviews: parsedReviews })
+            .then(() => {
+                API.getWalker(this.props.walker.uid)
+                    .then(updatedWalker => this.setState({ walker: updatedWalker })
+                    )
+            })
+
     }
 
     render() {
+        const cardImg = { backgroundImage: `url(${this.state.walker.image})` }
+
         return (
             <>
                 <Row type="flex" justify="center" >
                     <Col>
                         <Row type="flex" justify="center" gutter={16}>
                             <Col>
-                                <img className="detailsImg" src={this.props.walker.image} alt="" />
+                                <div className="walkerImg" style={cardImg}></div>
                             </Col>
                             <Col>
                                 <Row type="flex" justify="center" gutter={16}>
                                     <Col>
-                                        <h1>{this.props.walker.firstName} {this.props.walker.lastName}</h1>
+                                        <h1>{this.state.walker.firstName} {this.state.walker.lastName}</h1>
                                     </Col>
                                 </Row>
                                 <Row type="flex" justify="center" gutter={16}>
                                     <Col>
-                                        <Rate character={<PawIcon />} allowHalf disabled value={this.props.walker.rating} />
+                                        <Rate character={<PawIcon />} allowHalf disabled value={this.state.walker.rating} />
                                     </Col>
                                     <Col>
                                         <p className="ratingCount">{this.state.reviews.length} review(s)</p>
                                     </Col>
                                     <div className="detailsLine"></div>
                                 </Row>
-                                <h2>{this.props.walker.city}, {this.props.walker.state}</h2>
-                                <h2>Age: {this.getAge(this.props.walker.birthday)}</h2>
-                                <h3>Bio: {this.props.walker.bio}</h3>
+                                <h2>{this.state.walker.city}, {this.state.walker.state}</h2>
+                                <h2>Age: {this.getAge(this.state.walker.birthday)}</h2>
+                                <h3>Bio: {this.state.walker.bio}</h3>
                             </Col>
                         </Row>
                         <Row type="flex" justify="center" gutter={16}>
@@ -129,15 +147,17 @@ export default class WalkerDetails extends Component {
                                 <h1>Reviews</h1>
                             </Col>
                         </Row>
-                        <Row type="flex" justify='start'>
-                            {!!this.state.reviews ? (
-                                this.state.reviews.map((review) => (
-                                    <Review
-                                        {...this.props}
-                                        review={review}
-                                        key={review.id}
-                                    />
-                                ))) : null}
+                        <Row>
+                            <Col>
+                                {!!this.state.reviews ? (
+                                    this.state.reviews.map((review) => (
+                                        <Review
+                                            {...this.props}
+                                            review={review}
+                                            key={review.id}
+                                        />
+                                    ))) : null}
+                            </Col>
                         </Row>
 
                     </Col>
@@ -151,17 +171,17 @@ export default class WalkerDetails extends Component {
                         vis={this.state.editModalVis}
                         cancel={() => this.cancelModal("editModalVis")}
                         walker={this.props.walker}
-                        update={this.updateDetails}
+                        update={this.updateWalker}
                     /> : null
                 }
 
                 {
-                    this.state.reviewModalVis ? <Review
+                    this.state.reviewModalVis ? <WalkerReviewModal
                         vis={this.state.reviewModalVis}
                         cancel={() => this.cancelModal('reviewModalVis')}
                         walker={this.props.walker}
                         update={this.updateDetails}
-                        review={this.reviews}
+                        reviews={this.state.reviews}
                     /> : null
                 }
             </>

@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu } from 'antd'
 import './navbar.css'
+import { withRouter } from 'react-router-dom'
 
-export default class OwnerLinks extends Component {
+class OwnerLinks extends Component {
     state = {
-        current: 'home',
+        current: this.props.location.pathname,
     };
 
     handleClick = e => {
@@ -20,25 +21,27 @@ export default class OwnerLinks extends Component {
             <Menu onClick={this.handleClick}
                 selectedKeys={[this.state.current]}
                 mode="horizontal">
-                <Menu.Item key="home">
+                <Menu.Item key="/walkers/home">
                     <Link className="nav-link" to="/walkers/home">Home</Link>
                 </Menu.Item>
-                <Menu.Item key="myDogs">
+                <Menu.Item key="/walkers/profile">
                     <Link className="nav-link" to="/walkers/profile">My Profile</Link>
                 </Menu.Item>
-                <Menu.Item key="myRoutes">
+                <Menu.Item key="/walkers/calendar">
                     <Link className="nav-link" to="/walkers/calendar">My Calendar</Link>
                 </Menu.Item>
-                <Menu.Item key="walkers">
-                    <Link className="nav-link" to="walkers/walks">Walks</Link>
+                <Menu.Item key="/walkers/dogs/*">
+                    <Link className="nav-link" to="/walkers/dogs/all">Dogs</Link>
                 </Menu.Item>
-                <Menu.Item key="account">
+                <Menu.Item key="/walkers/account">
                     <Link className="nav-link" to="/walkers/account">Account</Link>
                 </Menu.Item>
-                <Menu.Item key="logOut">
+                <Menu.Item key="/auth/logOut">
                     <Link className="nav-link" to="/auth/login" onClick={this.props.logout}>Logout</Link>
                 </Menu.Item>
             </Menu>
         )
     }
 }
+
+export default withRouter(OwnerLinks)
