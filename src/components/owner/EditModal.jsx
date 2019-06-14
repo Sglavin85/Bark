@@ -56,7 +56,7 @@ export default class CreateModal extends Component {
                 .then(data => data.ref.getDownloadURL())
                 .then(async (url) => {
                     dogObj.image = url
-                    await API.editUserDogs(dogObj)
+                    await API.editUserDogs(dogObj.id, dogObj)
 
                     await this.props.update()
                     this.props.cancel("editModalVis")

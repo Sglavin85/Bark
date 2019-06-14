@@ -30,8 +30,8 @@ class OwnerLinks extends Component {
                 <Menu.Item key="/walkers/calendar">
                     <Link className="nav-link" to="/walkers/calendar">My Calendar</Link>
                 </Menu.Item>
-                <Menu.Item key="/walkers/dogs">
-                    <Link className="nav-link" to="/walkers/dogs">Dogs</Link>
+                <Menu.Item key="/walkers/dogs/*">
+                    <Link className="nav-link" to="/walkers/dogs/all">Dogs</Link>
                 </Menu.Item>
                 <Menu.Item key="/walkers/account">
                     <Link className="nav-link" to="/walkers/account">Account</Link>

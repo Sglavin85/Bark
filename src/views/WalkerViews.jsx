@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom'
 import WalkerHomeView from '../components/walker/WalkerHomeView'
 import WalkerDetails from '../components/walker/WalkerDetails'
 import WalkerCalendar from '../components/walker/WalkerCalendar'
-import WalkerDogs from '../components/walker/WalkerDogs'
+import WalkerDogViews from './WalkerDogViews'
 import WalkerAccount from '../components/walker/WalkerAccount'
 
 
@@ -43,9 +43,9 @@ class WalkerViews extends Component {
                     }
                 }}
                 />
-                <Route exact path="/walkers/dogs" render={(props) => {
+                <Route path="/walkers/dogs" render={(props) => {
                     if (this.isAuthenticated()) {
-                        return <WalkerDogs {...props} user={this.props.user} />
+                        return <WalkerDogViews {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />

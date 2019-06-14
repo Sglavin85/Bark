@@ -38,8 +38,17 @@ h1 {
 .walkerImg {
     background-size: cover;
     background-position: center;
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
+    background-repeat: no-repeat;
+    margin-top: 20px;
+}
+
+.dogImg {
+    background-size: cover;
+    background-position: center;
+    width: 400px;
+    height: 400px;
     background-repeat: no-repeat;
     margin-top: 20px;
 }

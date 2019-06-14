@@ -14,9 +14,9 @@ const API = {
         dog.id = key
         firebase.database().ref(`animals/${dog.id}`).set(dog)
     },
-    editUserDogs: function (dog) {
+    editUserDogs: function (id, dog) {
         JSON.parse(JSON.stringify(dog))
-        return firebase.database().ref(`animals/${dog.id}`).update(dog)
+        return firebase.database().ref(`animals/${id}`).update(dog)
     },
     deleteUserDog: function (dogId) {
         return firebase.database().ref(`animals/${dogId}`).remove()
@@ -51,6 +51,24 @@ const API = {
     getWalker: function (uid) {
         return fetch(`${url}/walkers/${uid}.json`)
             .then(response => response.json())
+    },
+    getDogReviews: function (dogId) {
+        return fetch(`${url}/animalReviews.json?orderBy="animalId"&equalTo="${dogId}"&print=pretty`)
+            .then(response => response.json())
+            .then(reviews => {
+                const reviewsArray = Object.values(reviews)
+                return reviewsArray
+            })
+    },
+    getDog: function (dogId) {
+        return fetch(`${url}/animals/${dogId}.json`).then(response => response.json())
+    },
+    addDogReview: function (review) {
+        JSON.parse(JSON.stringify(review))
+        var myRef = firebase.database().ref('animalReviews/').push();
+        var key = myRef.key;
+        review.id = key
+        return firebase.database().ref(`animalReviews/${review.id}`).set(review)
     }
 }
 
