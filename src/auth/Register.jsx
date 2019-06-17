@@ -4,6 +4,7 @@ import './auth.css'
 import { Link } from 'react-router-dom'
 import { registerUser } from './userManager'
 import moment from 'moment'
+import mapCalls from '../maps/APIcalls'
 
 const { Option } = Select;
 
@@ -44,10 +45,16 @@ export default class Register extends Component {
     submit = (evt) => {
         evt.preventDefault()
         const accountType = this.state.accountType
-        registerUser(this.state, accountType)
-            .then(newUser => {
-                this.props.login(newUser, accountType)
-                this.props.history.push(`/${accountType}/home`)
+        mapCalls.getUserAddress(this.state)
+            .then(location => {
+                const currentAddress = location.results[0].locations[0].latLng
+                this.setState({ lat: currentAddress.lat, long: currentAddress.lng }, () => {
+                    registerUser(this.state, accountType)
+                        .then(newUser => {
+                            this.props.login(newUser, accountType)
+                            this.props.history.push(`/${accountType}/home`)
+                        })
+                })
             })
     }
 

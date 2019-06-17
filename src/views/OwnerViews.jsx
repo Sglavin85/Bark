@@ -33,7 +33,6 @@ export default class OwnerViews extends Component {
                 }}
                 />
                 <Route exact path="/owners/routes" render={(props) => {
-                    debugger
                     if (this.isAuthenticated()) {
                         return <OwnerRoutes {...props} user={this.props.user} />
                     } else {
