@@ -69,6 +69,21 @@ const API = {
         var key = myRef.key;
         review.id = key
         return firebase.database().ref(`animalReviews/${review.id}`).set(review)
+    },
+    postOwnerFence: function (fence) {
+        debugger
+        var myRef = firebase.database().ref('fences/').push();
+        var key = myRef.key;
+        fence.id = key
+        return firebase.database().ref(`fences/${fence.id}`).set(fence)
+    },
+    getFence: function (ownerId) {
+        return fetch(`${url}/fences.json?orderBy="userId"&equalTo="${ownerId}"&print=pretty`)
+            .then(response => response.json())
+            .then(fence => {
+                const fenceArray = Object.values(fence)
+                return fenceArray
+            })
     }
 }
 

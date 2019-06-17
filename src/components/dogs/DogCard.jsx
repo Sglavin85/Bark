@@ -87,7 +87,11 @@ export default class DogCard extends Component {
                             {this.props.isWalker ? <div className="reviewBtn">
                                 <Button type="primary" onClick={() => {
                                     this.props.history.push(`/walkers/dogs/dog/${this.props.dog.id}`)
-                                }}>See Details</Button></div> : null}
+                                }}>See Details</Button>
+                                <Button type="primary" onClick={() => {
+                                    this.props.history.push(`/walkers/walks/${this.props.dog.id}`)
+                                }}>
+                                    Walk {this.props.dog.name}</Button></div> : null}
                         </Col>
                     </Row>
                 </Card>
