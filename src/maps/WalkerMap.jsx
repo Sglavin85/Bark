@@ -101,6 +101,11 @@ export default class Map extends Component {
 
     }
 
+
+    componentWillUnmount() {
+        clearInterval(this.timeoutControl)
+    }
+
     render() {
         return (
             <>

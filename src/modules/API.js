@@ -85,8 +85,8 @@ const API = {
                 return fenceArray
             })
     },
-    deleteFence: function (fenceId) {
-        return firebase.database().ref(`fenceId/${fenceId}`).remove()
+    editFence: function (fenceId, obj) {
+        return firebase.database().ref(`fences/${fenceId}`).update(obj)
     }
 }
 
