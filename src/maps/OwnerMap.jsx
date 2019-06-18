@@ -4,18 +4,27 @@ import './map.css'
 import { Row, Col, Button } from 'antd'
 import API from '../modules/API'
 
+const ButtonGroup = Button.Group
+
 export default class Map extends Component {
     constructor(props) {
         super(props)
         this.state = {
             lat: this.props.lat,
             long: this.props.long,
-            userFence: [],
+            userFence: this.props.fence[0].fence,
             activeMarker: [],
             isActiveCalculating: true
         }
         this.fenceRender = L.polygon(this.state.userFence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
+        this.markers = []
+        this.state.userFence.forEach(latLng => {
+            const marker = L.marker(latLng, { draggable: true })
+            this.markers.push(marker)
+        })
     }
+
+
 
 
 
@@ -54,16 +63,19 @@ export default class Map extends Component {
             maxZoom: 18,
             id: 'mapbox.streets'
         }).addTo(this.map);
+        console.log(this.markers)
+
 
         const handleMarkerDrag = (e) => {
-            const startLoc = [...this.state.activeMarker]
-            const fenceArray = [...this.state.userFence]
 
+            const fenceArray = [...this.state.userFence]
+            // debugger
             const index = fenceArray.findIndex((item) => {
-                return item[0] === startLoc[0] && item[1] === startLoc[1]
+                return item[0] === this.state.activeMarker[0] && item[1] === this.state.activeMarker[1]
             })
             if (index !== -1) {
-                fenceArray[index] = e.target._latlng
+                const newlatLng = Object.values(e.target._latlng)
+                fenceArray[index] = newlatLng
                 this.setState({ userFence: fenceArray }, () => {
                     this.fenceRender.remove()
                     this.fenceRender = L.polygon(this.state.userFence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
@@ -83,18 +95,28 @@ export default class Map extends Component {
         this.map.on('click', event => {
 
             const latLng = Object.values(event.latlng)
-            const marker = L.marker(latLng, { draggable: true }).addTo(this.map)
+            const marker = L.marker(latLng, { draggable: true })
+            this.markers.push(marker)
+            marker.addTo(this.map)
             marker.on('dragstart', changeActiveDragMarker)
             marker.on('dragend', handleMarkerDrag)
             const fence = [...this.state.userFence, latLng]
             this.setState({ userFence: fence })
             this.fenceRender.setLatLngs(this.state.userFence)
         })
+
+        this.markers.forEach((marker) => {
+            marker.on('dragstart', changeActiveDragMarker)
+            marker.on('dragend', handleMarkerDrag)
+            marker.addTo(this.map)
+        })
     }
 
     handleUndo = () => {
         let fenceArray = [...this.state.userFence]
         fenceArray.pop()
+        let lastMarker = this.markers.pop()
+        lastMarker.remove()
         this.setState({ userFence: fenceArray }, () => {
             this.fenceRender.remove()
             this.fenceRender = L.polygon(this.state.userFence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
@@ -102,14 +124,28 @@ export default class Map extends Component {
         })
     }
 
-    handleSave = () => {
+    handleClear = () => {
         debugger
+        this.markers.forEach(marker => {
+            marker.remove()
+        })
+        this.setState({ userFence: [] }, () => {
+            this.fenceRender.remove()
+            this.fenceRender = L.polygon(this.state.userFence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
+            this.fenceRender.addTo(this.map)
+        })
+
+    }
+
+    handleSave = () => {
+
         let fenceArray = [...this.state.userFence]
         const fenceObj = {
             userId: this.props.user.uid,
             fence: fenceArray
         }
         console.log(fenceObj)
+        API.getFence(this.props.user.uid).then(fence => { API.deleteFence(fence.id) })
         API.postOwnerFence(fenceObj)
     }
 
@@ -118,16 +154,19 @@ export default class Map extends Component {
             <>
                 <Row type="flex" justify="center">
                     <Col>
-                        <h1>Create a fence</h1>
+                        <h1>Create a Fence</h1>
                     </Col>
                 </Row>
                 <Row type="flex" justify="center">
                     <Col>
-
-                        <Button type="primary" onClick={() => this.handleUndo()}>
-                            Undo</Button>
-                        <Button type="primary" onClick={() => this.handleSave()}>
-                            Save</Button>
+                        <ButtonGroup>
+                            <Button type="primary" onClick={() => this.handleSave()}>
+                                Save</Button>
+                            <Button type="primary" onClick={() => this.handleUndo()}>
+                                Undo</Button>
+                            <Button type="primary" onClick={() => this.handleClear()}>
+                                Clear</Button>
+                        </ButtonGroup>
                     </Col>
                 </Row>
                 <Row type="flex" justify="center">

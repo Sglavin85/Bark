@@ -7,19 +7,14 @@ import './navbar.css'
 export default class NavBar extends Component {
 
     state = {
-        logo: "logoLogout"
+        logo: this.props.logo
     }
 
-    // componentDidMount() {
-    //     if (this.props.userLoggedIn === true) {
-    //         this.setState({ logo: null })
-    //     }
-    // }
-    // componentWillUpdate() {
-    //     if (this.props.userLoggedIn === true) {
-    //         this.setState({ logo: null })
-    //     }
-    // }
+    componentDidMount() {
+        if (this.props.userLoggedIn === true) {
+            this.setState({ logo: null })
+        }
+    }
 
     render() {
         return (
@@ -27,7 +22,7 @@ export default class NavBar extends Component {
 
                 <nav>
                     <div id="topNav">
-                        <div id="logoContainer" className={this.state.logo}>
+                        <div id="logoContainer" className='logoLogin'>
                             <img src={logo} alt="logo" className="nav-logo" />
                         </div>
                         {this.props.user ? (<div id="linksContainer">

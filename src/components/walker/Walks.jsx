@@ -20,7 +20,7 @@ export default class Walks extends Component {
                         const fenceArray = Object.values(fence)
                         this.setState({ fence: fenceArray }, () => {
                             API.getOwner(dog.ownerId)
-                                .then(owner => { this.setState({ lat: owner.lat, long: owner.long }) })
+                                .then(owner => { this.setState({ dog: dog, lat: owner.lat, long: owner.long }) })
                         })
                     })
             })
@@ -30,7 +30,7 @@ export default class Walks extends Component {
         return (
             <div>
                 <h1>{this.props.dog.name}'s walk</h1>
-                {!!this.state.lat ? <WalkerMap lat={this.state.lat} long={this.state.long} fence={this.state.fence[0]} /> : null}
+                {!!this.state.lat ? <WalkerMap lat={this.state.lat} long={this.state.long} fence={this.state.fence[0]} dog={this.state.dog} /> : null}
             </div>
         )
     }

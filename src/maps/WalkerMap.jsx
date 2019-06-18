@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import './map.css'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Modal } from 'antd'
+import { isPointInPolygon } from 'geolib'
 
+const warning = Modal.warning;
 
 export default class Map extends Component {
     constructor(props) {
@@ -20,6 +22,7 @@ export default class Map extends Component {
         this.fenceRender = L.polygon(this.state.userFence.fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
 
         this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#324759' })
+
     }
 
 
@@ -45,15 +48,24 @@ export default class Map extends Component {
                 this.map.setView([lat, long], 17);
                 // add a marker to my location
                 L.marker([lat, long]).addTo(this.map);
-                const currentPosition = [lat, long]
-                const path = [...this.state.walkPath, currentPosition]
+                const currentPositionObj = { latitude: lat, longitude: long }
+                const fenceArray = [...this.state.userFence.fence]
+                const fenceObj = fenceArray.map(latLng => {
+                    return { latitude: latLng[0], longitude: latLng[1] }
+                })
+                var isInFence = isPointInPolygon(currentPositionObj, fenceObj)
+                if (!isInFence) {
+                    this.showConfirm()
+                }
+                const currentPositionArray = [lat, long]
+                const path = [...this.state.walkPath, currentPositionArray]
                 this.setState({ walkPath: path }, () => {
                     // draw a polyline
                     this.pathRender.remove()
                     this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#324759' })
                     this.pathRender.addTo(this.map)
                 })
-            }
+            }, e => { console.warn(`Error(${e.code}): ${e.message}`) }, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
             );
         }
     }
@@ -65,6 +77,16 @@ export default class Map extends Component {
             this.trackWalk()
             this.timeoutControl = setInterval(this.trackWalk, 15000)
         })
+    }
+
+    showConfirm = () => {
+        warning({
+            title: `You have left ${this.props.dog.name}'s digital fence!`,
+            content: 'Please turn around',
+            okText: 'Ok',
+            okType: 'danger',
+            onOk() { }
+        });
     }
 
     handleEnd = () => {
