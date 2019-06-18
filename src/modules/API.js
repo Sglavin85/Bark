@@ -71,7 +71,6 @@ const API = {
         return firebase.database().ref(`animalReviews/${review.id}`).set(review)
     },
     postOwnerFence: function (fence) {
-        debugger
         var myRef = firebase.database().ref('fences/').push();
         var key = myRef.key;
         fence.id = key
@@ -87,6 +86,19 @@ const API = {
     },
     editFence: function (fenceId, obj) {
         return firebase.database().ref(`fences/${fenceId}`).update(obj)
+    },
+    postInvoice: function (obj) {
+        var myRef = firebase.database().ref('receipts/').push();
+        var key = myRef.key;
+        obj.id = key
+        return firebase.database().ref(`receipts/${obj.id}`).set(obj)
+    },
+    getInvoicesByOwnerId: function (userId) {
+        return fetch(`${url}/receipts.json?orderBy="ownerId"&equalTo="${userId}"&print=pretty`)
+            .then(response => response.json())
+    },
+    editInvoice: function (invoiceId, obj) {
+        return firebase.database().ref(`receipts/${invoiceId}`).update(obj)
     }
 }
 

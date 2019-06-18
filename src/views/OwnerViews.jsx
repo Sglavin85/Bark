@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom'
 import OwnerHomeView from '../components/owner/OwnerHomeView'
 import OwnerDogs from '../components/owner/OwnerDogs'
 import OwnerRoutes from '../components/owner/OwnerRoutes'
-import OwnerAccount from '../components/owner/OwnerAccount'
+import Payments from '../components/owner/payment/Payments'
 import OwnerWalkersViews from './OwnerWalkersViews';
 
 export default class OwnerViews extends Component {
@@ -51,13 +51,13 @@ export default class OwnerViews extends Component {
                 }}
                 />
 
-                <Route exact path="/owners/account" render={(props) => {
+                {/* <Route exact path="/owners/account" render={(props) => {
                     if (this.isAuthenticated()) {
-                        return <OwnerAccount {...props} user={this.props.user} />
+                        return <Payments {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
-                    }
+                    } */}
                 }}
                 />
             </>

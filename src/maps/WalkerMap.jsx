@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import L from 'leaflet';
 import './map.css'
 import { Row, Col, Button, Modal } from 'antd'
-import { isPointInPolygon } from 'geolib'
+import { isPointInPolygon, getDistance } from 'geolib'
+import API from '../modules/API';
 
 const warning = Modal.warning;
 
 export default class Map extends Component {
     constructor(props) {
         super(props)
+
         this.state = {
             lat: this.props.lat,
             long: this.props.long,
@@ -17,7 +19,8 @@ export default class Map extends Component {
             startTime: "",
             endTime: "",
             walkLength: "",
-            walkPath: []
+            walkPath: [],
+            currentUser: ''
         }
         this.fenceRender = L.polygon(this.state.userFence.fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
 
@@ -28,6 +31,8 @@ export default class Map extends Component {
 
 
     componentDidMount() {
+        const currentUser = JSON.parse(sessionStorage.getItem("user"))
+        this.setState({ user: currentUser })
         // create map
         this.map = L.map('map', { drawControl: true })
             .setView([this.props.lat, this.props.long], 17)
@@ -97,6 +102,51 @@ export default class Map extends Component {
             timeDif /= 1000
             var timeDifInSeconds = Math.round(timeDif)
             this.setState({ walkLength: timeDifInSeconds })
+            var distanceWalked;
+            for (var i = 0; i < this.state.walkPath.legth; i++) {
+                if (i + 1 !== this.state.walkPath.length) {
+                    const pathObj1 = this.state.walkPath[i].map(latLng => {
+                        return { latitude: latLng[0], longitude: latLng[1] }
+                    })
+                    const pathObj2 = this.state.walkPath[i + 1].map(latLng => {
+                        return { latitude: latLng[0], longitude: latLng[1] }
+                    })
+                    const distanceOfLeg = getDistance(pathObj1, pathObj2, .01)
+                    distanceWalked = distanceWalked + distanceOfLeg
+                }
+            }
+
+            var walkCost = 10
+
+            const distCost = distanceWalked * 0.01
+            const timeCost = this.state.walkLength * 0.01666
+            const realWalkCost = distCost + timeCost
+            if (realWalkCost < 10) {
+                walkCost = realWalkCost
+            }
+
+
+            var newDate = new Date().toLocaleString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "2-digit"
+            })
+            const obj = {
+                ammount: walkCost,
+                date: newDate,
+                distance: distanceWalked,
+                dogName: this.props.dog.name,
+                ownerId: this.props.owner.uid,
+                ownerFirstName: this.props.owner.firstName,
+                ownerLastName: this.props.owner.lastName,
+                walkerId: this.state.user.uid,
+                walkerFirstName: this.state.user.firstName,
+                walkerLastName: this.state.user.lastName,
+                path: this.state.walkPath,
+                resolved: false
+            }
+
+            API.postInvoice(obj)
         })
 
     }
