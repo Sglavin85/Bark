@@ -112,6 +112,7 @@ export default class Map extends Component {
         })
     }
 
+
     handleUndo = () => {
         let fenceArray = [...this.state.userFence]
         fenceArray.pop()
@@ -145,8 +146,7 @@ export default class Map extends Component {
             fence: fenceArray
         }
         console.log(fenceObj)
-        API.getFence(this.props.user.uid).then(fence => { API.deleteFence(fence.id) })
-        API.postOwnerFence(fenceObj)
+        API.editFence(this.props.fence[0].id, fenceObj)
     }
 
     render() {
