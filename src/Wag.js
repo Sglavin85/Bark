@@ -17,12 +17,13 @@ class Wag extends Component {
 
   state = {
     userIsOwner: sessionStorage.getItem('accountType') === 'owners',
-    user: JSON.parse(sessionStorage.getItem('user'))
+    user: JSON.parse(sessionStorage.getItem('user')),
+    logo: 'logoLogout'
   }
 
 
   login = (user, accountType) => {
-    this.setState({ userLoggedIn: true, user: user })
+    this.setState({ userLoggedIn: true, user: user, logo: 'logoLogin' })
     if (accountType === "owners") {
       this.setState({ userIsOwner: true })
       this.props.history.push(`/owners/home`)
@@ -36,7 +37,8 @@ class Wag extends Component {
     this.setState({
       userLoggedIn: false,
       userIsOwner: false,
-      user: null
+      user: null,
+      logo: 'logoLogout'
     })
     this.props.history.push(`auth/login`)
   }
@@ -47,7 +49,7 @@ class Wag extends Component {
       <Layout className="layout">
         <div id="topStrip"></div>
         <Header>
-          <NavBar logout={this.logout} user={this.state.user} userIsOwner={this.state.userIsOwner} />
+          <NavBar logout={this.logout} logo={this.state.logo} user={this.state.user} userIsOwner={this.state.userIsOwner} />
         </Header>
         <Content>
           <Route path="/auth" render={(props) => {

@@ -17,10 +17,15 @@
 
 .nav-logo {
     position: absolute;
+    transition: all 2s ease;
 }
 
 .logoLogout {
     margin-left: 44.5%;
+}
+
+.logoLogin {
+    margin-left: .2%
 }
 
 #linksContainer {
