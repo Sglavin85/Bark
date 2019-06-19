@@ -69,7 +69,7 @@ export default class OwnerHomeView extends Component {
                     <Col>
                         <h1 className="homeTypeFace">Hi {firstName}, Welcome Back</h1>
                         <div className="firstHR"></div>
-                        <Row type="flex" justify="center">
+                        <Row type="flex" justify="start">
                             {this.makeDogCards(this.state.dogs)}
                         </Row>
                         <Row type="flex" justify="center">

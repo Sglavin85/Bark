@@ -99,7 +99,12 @@ const API = {
     },
     editInvoice: function (invoiceId, obj) {
         return firebase.database().ref(`receipts/${invoiceId}`).update(obj)
-    }
+    },
+    getInvoicesByWalkerId: function (walkerId) {
+        return fetch(`${url}/receipts.json?orderBy="walkerId"&equalTo="${walkerId}"&print=pretty`)
+            .then(response => response.json())
+    },
+
 }
 
 export default API

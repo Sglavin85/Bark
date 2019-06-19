@@ -51,13 +51,13 @@ export default class OwnerViews extends Component {
                 }}
                 />
 
-                {/* <Route exact path="/owners/account" render={(props) => {
+                <Route exact path="/owners/account" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <Payments {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
-                    } */}
+                    }
                 }}
                 />
             </>

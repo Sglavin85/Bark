@@ -3,6 +3,7 @@ import L from 'leaflet';
 import './map.css'
 import { Row, Col, Button } from 'antd'
 import API from '../modules/API'
+import './map.css'
 
 const ButtonGroup = Button.Group
 

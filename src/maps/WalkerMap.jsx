@@ -4,6 +4,7 @@ import './map.css'
 import { Row, Col, Button, Modal } from 'antd'
 import { isPointInPolygon, getDistance } from 'geolib'
 import API from '../modules/API';
+import { tsNamespaceExportDeclaration } from '@babel/types';
 
 const warning = Modal.warning;
 
@@ -94,6 +95,11 @@ export default class Map extends Component {
         });
     }
 
+    convertLatLng = (latLngArray) => {
+        const [latitude, longitude] = latLngArray
+        return { latitude, longitude }
+    }
+
     handleEnd = () => {
         clearInterval(this.timeoutControl)
         const end = new Date()
@@ -102,18 +108,14 @@ export default class Map extends Component {
             timeDif /= 1000
             var timeDifInSeconds = Math.round(timeDif)
             this.setState({ walkLength: timeDifInSeconds })
-            var distanceWalked;
-            for (var i = 0; i < this.state.walkPath.legth; i++) {
-                if (i + 1 !== this.state.walkPath.length) {
-                    const pathObj1 = this.state.walkPath[i].map(latLng => {
-                        return { latitude: latLng[0], longitude: latLng[1] }
-                    })
-                    const pathObj2 = this.state.walkPath[i + 1].map(latLng => {
-                        return { latitude: latLng[0], longitude: latLng[1] }
-                    })
-                    const distanceOfLeg = getDistance(pathObj1, pathObj2, .01)
-                    distanceWalked = distanceWalked + distanceOfLeg
-                }
+            var distanceWalked = 0
+            for (var i = 0; i < this.state.walkPath.length - 1; i++) {
+
+                const pathObj1 = this.convertLatLng(this.state.walkPath[i])
+                const pathObj2 = this.convertLatLng(this.state.walkPath[i + 1])
+                const distanceOfLeg = getDistance(pathObj1, pathObj2, 0.3)
+                distanceWalked = distanceWalked + distanceOfLeg
+
             }
 
             var walkCost = 10
@@ -121,7 +123,7 @@ export default class Map extends Component {
             const distCost = distanceWalked * 0.01
             const timeCost = this.state.walkLength * 0.01666
             const realWalkCost = distCost + timeCost
-            if (realWalkCost < 10) {
+            if (realWalkCost > 10) {
                 walkCost = realWalkCost
             }
 
@@ -143,7 +145,8 @@ export default class Map extends Component {
                 walkerFirstName: this.state.user.firstName,
                 walkerLastName: this.state.user.lastName,
                 path: this.state.walkPath,
-                resolved: false
+                resolved: false,
+                dogImg: this.props.dog.image
             }
 
             API.postInvoice(obj)

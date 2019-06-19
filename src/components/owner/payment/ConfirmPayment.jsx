@@ -13,7 +13,7 @@ export default class ConfirmPayment extends Component {
             const obj = { resolved: true }
             API.editInvoice(invoice.id, obj)
         })
-            .then(this.props.changeStep(2))
+        this.props.changeStep(2)
     }
     render() {
         return (
@@ -21,7 +21,7 @@ export default class ConfirmPayment extends Component {
                 <Row type="flex" justify="center">
                     <Col>
                         <h2>Summary</h2>
-                        <h4>Total: {this.props.total}</h4>
+                        <h4>Total: ${this.props.total}</h4>
                         <h4>Fees: $2</h4>
                         <div className="Line"></div>
                         <h3>TOTAL: {this.props.total + 2}</h3>
@@ -30,8 +30,8 @@ export default class ConfirmPayment extends Component {
                 <Row type="flex" justify="center">
                     <Col>
                         <Button.Group>
-                            <Button type="primary" onClick={this.resolve}>Pay Now</Button>
                             <Button type="primary" onClick={() => { this.props.changeStep(0) }}>Go Back</Button>
+                            <Button type="primary" onClick={this.resolve}>Pay Now</Button>
                         </Button.Group>
                     </Col>
                 </Row>

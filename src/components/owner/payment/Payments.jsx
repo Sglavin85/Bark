@@ -12,14 +12,16 @@ export default class Payments extends Component {
     state = {
         step: 0,
         invoices: [],
-        totalCost: ''
+        totalCost: '',
+        invoiceReturn: false
     }
 
     componentDidMount() {
         API.getInvoicesByOwnerId(this.props.user.uid)
             .then(invoices => {
-                const parsedInvoices = invoices.filter(invoice => !invoice.resolved)
-                var totalCost
+                const invoiceArray = Object.values(invoices)
+                const parsedInvoices = invoiceArray.filter(invoice => !invoice.resolved)
+                var totalCost = 0
                 parsedInvoices.forEach(invoice => {
                     totalCost = totalCost + invoice.ammount
                 });
@@ -27,14 +29,16 @@ export default class Payments extends Component {
             })
     }
 
-    changeStep(step) {
-        this.setState({ step: step })
+    changeStep = (stepNum) => {
+        this.setState({ step: stepNum })
     }
 
-    checkStep(step) {
+    checkStep = (step) => {
         if (this.state.step === step)
             return true
     }
+
+
     render() {
         return (
             <>
@@ -42,16 +46,16 @@ export default class Payments extends Component {
                     <Row type="flex" justify="center">
                         <Col span={20}>
                             <Steps current={this.state.step}>
-                                <Step title="1. Pending Invoices" description="Please resolve your invoiced below" />
+                                <Step title="1. Pending Invoices" description="Click dog to see details" />
                                 <Step title="2. Finalize Transaction" description="Confirm Payment" />
                                 <Step title="3. Confirmation Number" description="Save for your Records" />
                             </Steps>
                         </Col>
                     </Row>
                 </div>
-                {this.checkStep(0) ? <Invoices invoices={this.state.invoices} total={this.state.total} changeStep={this.state.step} /> : null}
-                {this.checkStep(1) ? <ConfirmPayment invoices={this.state.invoices} total={this.state.total} changeStep={this.state.step} /> : null}
-                {this.checkStep(3) ? <Confirmation /> : null}
+                {this.checkStep(0) ? <Invoices invoices={this.state.invoices} total={this.state.total} changeStep={this.changeStep} /> : null}
+                {this.checkStep(1) ? <ConfirmPayment invoices={this.state.invoices} total={this.state.total} changeStep={this.changeStep} /> : null}
+                {this.checkStep(2) ? <Confirmation /> : null}
             </>
         )
     }

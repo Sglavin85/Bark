@@ -51,7 +51,7 @@ export default class OwnerHomeView extends Component {
                     <Col>
                         <h1 className="homeTypeFace">Hi {firstName}, Welcome Back</h1>
                         <div className="firstHR"></div>
-                        <Row type="flex" justify="center">
+                        {/* <Row type="flex" justify="center">
                             <h1>PlaceHolder</h1>
                         </Row>
                         <Row type="flex" justify="center">
@@ -60,14 +60,14 @@ export default class OwnerHomeView extends Component {
                                     <Button href='/walkers/calendar' size="large" type="primary">Manage Calendar</Button>
                                 </div>
                             </Col>
-                        </Row>
+                        </Row> */}
                     </Col>
                 </Row>
                 <div className="Line"></div>
                 <Row type="flex" justify="center">
                     <Col>
                         <h1 className="homeTypeFace">Featured Dogs</h1>
-                        <Row type="flex" justify="center">
+                        <Row type="flex" justify="start">
                             {this.makeDogCards(this.state.dogs)}
                         </Row>
                     </Col>
