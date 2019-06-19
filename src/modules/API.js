@@ -104,6 +104,9 @@ const API = {
         return fetch(`${url}/receipts.json?orderBy="walkerId"&equalTo="${walkerId}"&print=pretty`)
             .then(response => response.json())
     },
+    getAllInvoices: function () {
+        return fetch(`${url}/receipts.json`).then(response => response.json())
+    }
 
 }
 

@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import { Card, Modal, Button, Row, Col } from 'antd'
-import API from '../../../modules/API'
 import './payment.css'
+import { withRouter } from 'react-router-dom'
 
-export default class InvoiceCard extends Component {
+class InvoiceCard extends Component {
 
-    componentDidMount() {
-        API.getFence(this.props.invoice.ownerId)
-            .then(fence => this.setState({ ownerFence: fence }))
-        API.getOwner(this.invoice.ownerId)
-            .then(owner => this.setState({ owner: owner }))
 
+
+    handleClick = () => {
+        this.props.history.push(`/owners/paths/${this.props.invoice.id}`)
     }
-
 
     render() {
 
@@ -42,3 +39,5 @@ export default class InvoiceCard extends Component {
         )
     }
 }
+
+export default withRouter(InvoiceCard)

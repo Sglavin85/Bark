@@ -58,7 +58,7 @@ export default class Login extends Component {
                         <Form.Item>
                             <Input
                                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-
+                                type="password"
                                 id="password"
                                 placeholder="Password"
                                 onChange={this.handleFieldChange}
