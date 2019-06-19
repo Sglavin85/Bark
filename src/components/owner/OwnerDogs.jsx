@@ -103,19 +103,22 @@ export default class OwnerDogs extends Component {
                         <Row type="flex" justify="center">
                             {this.makeDogCards(this.state.dogs)}
                             <Col>
-                                <Card hoverable
-                                    style={{ width: 400 }}
-                                    cover={
-                                        <div className="addCard" style={cardImg}></div>
-                                    }
+                                <div className="addCard">
+                                    <Card hoverable
+                                        style={{ width: 400 }}
+                                        cover={
+                                            <div className="addCardBackground" style={cardImg}></div>
+                                        }
 
-                                >
-                                    <Row type="flex" justify="center">
-                                        <Col>
-                                            <Button size="large" type="primary" onClick={() => this.modal("createModalVis")}>Add A New Wagger</Button>
-                                        </Col>
-                                    </Row>
-                                </Card>
+                                    >
+                                        <Row type="flex" justify="center">
+                                            <Col>
+                                                <Button size="large" type="primary" onClick={() => this.modal("createModalVis")}>Add A New Wagger</Button>
+                                            </Col>
+                                        </Row>
+                                    </Card>
+                                </div>
+
                             </Col>
                         </Row>
                     </Col>

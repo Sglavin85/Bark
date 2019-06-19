@@ -1,0 +1,26 @@
+.stepContainer {
+    margin-top: 20px;
+}
+
+.invoiceBackgroundImg {
+    background-size: cover;
+    background-position: center;
+    height: 135px;
+    width: 100px;
+    background-repeat: no-repeat;
+    margin: 5px;
+}
+
+.invoiceCardDiv {
+    padding: 0;
+    margin-top: -10px;
+    margin-bottom: 20px;
+
+    width: 400px;
+    height: 147px;
+
+}
+
+.invoiceCardDiv:hover {
+    border: #324759 1px solid;
+}

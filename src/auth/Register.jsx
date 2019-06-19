@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { registerUser } from './userManager'
 import moment from 'moment'
 import mapCalls from '../maps/APIcalls'
+import * as firebase from 'firebase/app';
+import 'firebase/storage';
 
 const { Option } = Select;
 
@@ -20,7 +22,8 @@ export default class Register extends Component {
         address: "",
         city: "",
         state: "",
-        zip: ""
+        zip: "",
+        image: ""
     }
 
     handleAccountType = (e) => {
@@ -42,26 +45,36 @@ export default class Register extends Component {
         this.setState({ state: evt })
     }
 
-    submit = (evt) => {
+    submit = async (evt) => {
         evt.preventDefault()
         const accountType = this.state.accountType
-        mapCalls.getUserAddress(this.state)
-            .then(location => {
-                const currentAddress = location.results[0].locations[0].latLng
-                this.setState({ lat: currentAddress.lat, long: currentAddress.lng }, () => {
-                    registerUser(this.state, accountType)
-                        .then(newUser => {
-                            this.props.login(newUser, accountType)
-                            this.props.history.push(`/${accountType}/home`)
-                        })
+        if (!!this.state.image) {
+            const storageRef = firebase.storage().ref('profiles');
+            const ref = storageRef.child(`${Date.now()}`);
+            await ref.put(this.state.image)
+                .then(data => data.ref.getDownloadURL())
+                .then((url) => {
+                    this.setState({ image: url }, () => {
+                        mapCalls.getUserAddress(this.state)
+                            .then(location => {
+                                const currentAddress = location.results[0].locations[0].latLng
+                                this.setState({ lat: currentAddress.lat, long: currentAddress.lng }, () => {
+                                    registerUser(this.state, accountType)
+                                        .then(newUser => {
+                                            this.props.login(newUser, accountType)
+                                            this.props.history.push(`/${accountType}/home`)
+                                        })
+                                })
+                            })
+                    })
                 })
-            })
+        }
     }
 
     // type="password"
     render() {
         return (
-            <Row type="flex" justify="center">
+            <Row type="flex" justify="center" >
                 <Col span={8}>        <h1 className="login">Register</h1>
                     <Row type="flex" justify="center" className="selectButtons">
                         <Col>
@@ -75,7 +88,9 @@ export default class Register extends Component {
                         <Col span={24} offset={3}>
                             <Form className="register-form" layout="vertical" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} >
 
-
+                                <Form.Item label="Upload a picture: ">
+                                    <Input id="picture" type="file" onChange={(e) => this.setState({ image: e.target.files[0] })} />
+                                </Form.Item>
                                 <Form.Item label="E-Mail: ">
                                     <Input id="email" onChange={this.handleFieldChange} />
                                 </Form.Item>

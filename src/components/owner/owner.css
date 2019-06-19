@@ -9,6 +9,17 @@
     width: 90%;
     margin: 20px auto;
 }
+.seperator {
+    height: 50px;
+}
+
+.addCard {
+    margin: 0 10px 20px 10px;
+
+}
+
+
+
 
 .firstHR {
     height: 2px;
@@ -22,9 +33,9 @@
     font-size: xx-large;
 }
 
-.addCard {
+.addCardBackground {
     background-size: cover;
     background-position: center;
-    height: 650px;
+    height: 677px;
     background-repeat: no-repeat;
 }
