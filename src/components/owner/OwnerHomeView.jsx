@@ -45,9 +45,7 @@ export default class OwnerHomeView extends Component {
 
     makeWalkerCards = walkers => {
         if (this.state.walkers.length > 0) {
-            const sortedWalkers = walkers.sort(function (a, b) {
-                return a - b;
-            }, walkers.rating)
+            const sortedWalkers = walkers.sort((a, b) => (a.rating > b.rating ? 1 : -1))
             const topWalkers = sortedWalkers.reverse().slice(0, 3)
             const walkerCards = topWalkers.map(walker => (
                 <Col key={walker.uid}>

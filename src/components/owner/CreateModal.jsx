@@ -22,7 +22,8 @@ export default class CreateModal extends Component {
             gender: "",
             image: [],
             ownerId: this.props.uid,
-            loading: false
+            loading: false,
+            rating: 0
         }
     }
 

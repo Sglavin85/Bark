@@ -12,7 +12,7 @@ export default class Map extends Component {
         this.state = {
             lat: this.props.lat,
             long: this.props.long,
-            userFence: this.props.fence[0].fence,
+            userFence: this.props.fence,
             activeMarker: [],
             isActiveCalculating: true
         }
@@ -56,6 +56,7 @@ export default class Map extends Component {
 
     componentDidMount() {
         // create map
+
         this.map = L.map('map', { drawControl: true })
             .setView([this.props.lat, this.props.long], 15)
         // add tiles to map
@@ -63,13 +64,11 @@ export default class Map extends Component {
             maxZoom: 18,
             id: 'mapbox.streets'
         }).addTo(this.map);
-        console.log(this.markers)
 
 
         const handleMarkerDrag = (e) => {
 
             const fenceArray = [...this.state.userFence]
-            // debugger
             const index = fenceArray.findIndex((item) => {
                 return item[0] === this.state.activeMarker[0] && item[1] === this.state.activeMarker[1]
             })
@@ -126,7 +125,7 @@ export default class Map extends Component {
     }
 
     handleClear = () => {
-        debugger
+
         this.markers.forEach(marker => {
             marker.remove()
         })
@@ -135,18 +134,30 @@ export default class Map extends Component {
             this.fenceRender = L.polygon(this.state.userFence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
             this.fenceRender.addTo(this.map)
         })
+        if (this.props.fence.length > 0) {
+            API.deleteFence(this.props.fenceObj[0].id)
+        }
 
     }
 
     handleSave = () => {
+        if (this.props.fence.length > 0) {
 
-        let fenceArray = [...this.state.userFence]
-        const fenceObj = {
-            userId: this.props.user.uid,
-            fence: fenceArray
+            let fenceArray = [...this.state.userFence]
+            const fenceObj = {
+                userId: this.props.user.uid,
+                fence: fenceArray
+            }
+            API.editFence(this.props.fenceObj[0].id, fenceObj)
+        } else {
+
+            let fenceArray = [...this.state.userFence]
+            const fenceObj = {
+                userId: this.props.user.uid,
+                fence: fenceArray
+            }
+            API.postOwnerFence(fenceObj)
         }
-        console.log(fenceObj)
-        API.editFence(this.props.fence[0].id, fenceObj)
     }
 
     render() {

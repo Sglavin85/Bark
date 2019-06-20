@@ -5,8 +5,6 @@ import API from '../../modules/API'
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 
-const { TextArea } = Input;
-
 const { Option } = Select;
 
 
@@ -18,19 +16,17 @@ export default class Register extends Component {
         address: "",
         city: "",
         state: "",
-        zip: "",
-        bio: ""
+        zip: ""
     }
 
     componentDidMount = () => {
         this.setState({
-            firstName: this.props.walker.firstName,
-            lastName: this.props.walker.lastName,
-            address: this.props.walker.address,
-            city: this.props.walker.city,
-            state: this.props.walker.state,
-            zip: this.props.walker.zip,
-            bio: this.props.walker.bio
+            firstName: this.props.user.firstName,
+            lastName: this.props.user.lastName,
+            address: this.props.user.address,
+            city: this.props.user.city,
+            state: this.props.user.state,
+            zip: this.props.user.zip,
         })
     }
 
@@ -45,26 +41,25 @@ export default class Register extends Component {
         this.setState({ state: evt })
     }
 
-    handleEditSubmit = async (walker) => {
+    handleEditSubmit = async (user) => {
         if (!!this.state.image) {
             const storageRef = firebase.storage().ref('profiles');
             const ref = storageRef.child(`${Date.now()}`);
 
-            await ref.put(walker.image)
+            await ref.put(user.image)
                 .then(data => data.ref.getDownloadURL())
                 .then(async (url) => {
-                    walker.image = url
+                    user.image = url
                 })
         }
 
-        await API.editWalkerProfile(this.props.walker.uid, walker)
+        await API.editUserProfile(this.props.user.uid, user)
         await this.props.update()
         this.props.cancel("editModalVis")
 
     }
 
     render() {
-        console.log('1', this.props.walker.uid)
         return (
             <Modal
                 visible={this.props.vis}
@@ -97,9 +92,6 @@ export default class Register extends Component {
                                     </Form.Item>
                                     <Form.Item label="Last Name: ">
                                         <Input value={this.state.lastName} id="lastName" onChange={this.handleFieldChange} />
-                                    </Form.Item>
-                                    <Form.Item label="Tell us about yourself: ">
-                                        <TextArea value={this.state.bio} rows={4} id="bio" onChange={this.handleFieldChange} />
                                     </Form.Item>
                                     <Form.Item label="Address: ">
                                         <Input value={this.state.address} id="address" onChange={this.handleFieldChange} />

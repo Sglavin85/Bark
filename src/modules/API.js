@@ -106,6 +106,9 @@ const API = {
     },
     getAllInvoices: function () {
         return fetch(`${url}/receipts.json`).then(response => response.json())
+    },
+    deleteFence: function (fenceId) {
+        return firebase.database().ref(`fences/${fenceId}`).remove()
     }
 
 }

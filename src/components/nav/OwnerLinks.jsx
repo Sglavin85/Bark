@@ -27,8 +27,11 @@ class OwnerLinks extends Component {
                 <Menu.Item key="/owners/dogs">
                     <Link className="nav-link" to="/owners/dogs">My Dogs</Link>
                 </Menu.Item>
+                <Menu.Item key="/owners/profile">
+                    <Link className="nav-link" to="/owners/profile">My Profile</Link>
+                </Menu.Item>
                 <Menu.Item key="/owners/routes">
-                    <Link className="nav-link" to="/owners/routes">My Routes</Link>
+                    <Link className="nav-link" to="/owners/routes">My Fence</Link>
                 </Menu.Item>
                 <Menu.Item key="/owners/walkers">
                     <Link className="nav-link" to="/owners/walkers/all">Walkers</Link>

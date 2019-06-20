@@ -7,15 +7,20 @@ export default class OwnerRoutes extends Component {
     state = {
         lat: '',
         long: '',
-        userFence: []
+        userFenceObj: [{ fence: [] }],
+        isStateBack: false
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getFence(currentUser.uid)
             .then(fence => {
+                console.log(fence)
                 if (fence.length > 0) {
-                    this.setState({ lat: currentUser.lat, long: currentUser.long, userFence: fence })
+                    this.setState({ lat: currentUser.lat, long: currentUser.long, userFenceObj: fence }, () => { this.setState({ isStateBack: true }) })
+                } else {
+                    this.setState({ lat: currentUser.lat, long: currentUser.long, userFence: [] }, () => { this.setState({ isStateBack: true }) })
                 }
 
             })
@@ -23,7 +28,7 @@ export default class OwnerRoutes extends Component {
     render() {
         return (
             <div>
-                {!!this.state.lat ? <OwnerMap user={this.props.user} fence={this.state.userFence} lat={this.state.lat} long={this.state.long} /> : null}
+                {!!this.state.isStateBack ? <OwnerMap user={this.props.user} fence={this.state.userFenceObj[0].fence} fenceObj={this.state.userFenceObj} lat={this.state.lat} long={this.state.long} /> : null}
             </div>
         )
     }
