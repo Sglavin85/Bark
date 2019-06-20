@@ -88,7 +88,7 @@ export default class Register extends Component {
                         <Col span={24} offset={3}>
                             <Form className="register-form" layout="vertical" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} >
 
-                                <Form.Item label="Upload a picture: ">
+                                <Form.Item label="Upload a picture of you: ">
                                     <Input id="picture" type="file" onChange={(e) => this.setState({ image: e.target.files[0] })} />
                                 </Form.Item>
                                 <Form.Item label="E-Mail: ">

@@ -109,6 +109,9 @@ const API = {
     },
     deleteFence: function (fenceId) {
         return firebase.database().ref(`fences/${fenceId}`).remove()
+    },
+    editUserProfile: function (uid, obj) {
+        return firebase.database().ref(`owners/${uid}`).update(obj)
     }
 
 }
