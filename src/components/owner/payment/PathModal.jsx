@@ -17,6 +17,7 @@ export default class PathModal extends Component {
 
     }
     componentDidMount() {
+        debugger
         console.log(this.props)
         API.getFence(this.props.invoice.ownerId)
             .then(fence => this.setState({ ownerFence: fence }, () => {

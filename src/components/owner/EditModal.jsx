@@ -10,7 +10,7 @@ const { TextArea } = Input;
 
 const { Option } = Select;
 
-export default class CreateModal extends Component {
+export default class EditModal extends Component {
     state = {
         id: "",
         name: "",
@@ -48,6 +48,7 @@ export default class CreateModal extends Component {
     }
 
     handleEditSubmit = async (dogObj) => {
+
         if (!!this.state.image) {
             const storageRef = firebase.storage().ref('profiles');
             const ref = storageRef.child(`${Date.now()}`);
@@ -63,7 +64,7 @@ export default class CreateModal extends Component {
                 })
 
         } else {
-            await API.editUserDogs(dogObj)
+            await API.editUserDogs(dogObj.id, dogObj)
             await this.props.update()
             this.props.cancel("editModalVis")
 

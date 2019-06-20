@@ -6,6 +6,7 @@ import OwnerRoutes from '../components/owner/OwnerRoutes'
 import Payments from '../components/owner/payment/Payments'
 import OwnerWalkersViews from './OwnerWalkersViews';
 import PathModal from '../components/owner/payment/PathModal'
+import OwnerProfile from '../components/owner/OwnerProfile'
 import API from '../modules/API'
 
 export default class OwnerViews extends Component {
@@ -17,8 +18,10 @@ export default class OwnerViews extends Component {
 
     componentDidMount() {
         API.getAllInvoices().then(invoices => {
-            const parsedInvoices = Object.values(invoices)
-            this.setState({ invoices: parsedInvoices })
+            if (invoices !== null) {
+                const parsedInvoices = Object.values(invoices)
+                this.setState({ invoices: parsedInvoices })
+            }
         })
     }
 
@@ -38,6 +41,15 @@ export default class OwnerViews extends Component {
                 <Route exact path="/owners/dogs" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <OwnerDogs {...props} user={this.props.user} />
+                    } else {
+                        return <Redirect to="/auth/login"
+                        />
+                    }
+                }}
+                />
+                <Route exact path="/owners/profile" render={(props) => {
+                    if (this.isAuthenticated()) {
+                        return <OwnerProfile {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />

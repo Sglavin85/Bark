@@ -24,9 +24,7 @@ export default class OwnerHomeView extends Component {
 
     makeDogCards = dogs => {
         if (this.state.dogs.length > 0) {
-            const sortedDogs = dogs.sort(function (a, b) {
-                return a - b;
-            }, dogs.rating)
+            const sortedDogs = dogs.sort((a, b) => (a.rating > b.rating ? 1 : -1))
             const topDogs = sortedDogs.reverse().slice(0, 3)
             const dogCards = topDogs.map((dog, index) => (
                 <Col key={index}>

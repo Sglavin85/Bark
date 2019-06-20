@@ -25,7 +25,6 @@ export default class DogCard extends Component {
     }
 
     modal = (modalName) => {
-        // debugger
         const stateToChange = { [modalName]: true }
         this.setState(
             stateToChange
