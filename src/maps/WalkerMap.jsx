@@ -27,6 +27,7 @@ export default class Map extends Component {
 
         this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#324759' })
 
+        this.marker = null
     }
 
 
@@ -47,13 +48,18 @@ export default class Map extends Component {
     }
 
     trackWalk = () => {
+        if (this.marker !== null) {
+            this.marker.remove()
+            this.marker = null
+        }
         if (this.state.walkIsActive) {
             navigator.geolocation.getCurrentPosition(pos => {
                 const lat = pos.coords.latitude;
                 const long = pos.coords.longitude;
                 this.map.setView([lat, long], 17);
                 // add a marker to my location
-                L.marker([lat, long]).addTo(this.map);
+                this.marker = L.marker([lat, long])
+                this.marker.addTo(this.map);
                 const currentPositionObj = { latitude: lat, longitude: long }
                 const fenceArray = [...this.state.userFence.fence]
                 const fenceObj = fenceArray.map(latLng => {

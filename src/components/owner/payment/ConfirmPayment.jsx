@@ -12,6 +12,12 @@ export default class ConfirmPayment extends Component {
         this.props.invoices.forEach(invoice => {
             const obj = { resolved: true }
             API.editInvoice(invoice.id, obj)
+            API.getWalker(invoice.walkerId)
+                .then(walker => {
+                    const total = walker.account + invoice.ammount
+                    const newTotal = { account: total }
+                    API.editWalkerProfile(walker.uid, newTotal)
+                })
         })
         this.props.changeStep(2)
     }

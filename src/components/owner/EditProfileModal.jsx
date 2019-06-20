@@ -4,6 +4,8 @@ import '../../auth/auth.css'
 import API from '../../modules/API'
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
+import mapCalls from '../../maps/APIcalls'
+
 
 const { Option } = Select;
 
@@ -42,6 +44,7 @@ export default class Register extends Component {
     }
 
     handleEditSubmit = async (user) => {
+        debugger
         if (!!this.state.image) {
             const storageRef = firebase.storage().ref('profiles');
             const ref = storageRef.child(`${Date.now()}`);
@@ -52,10 +55,21 @@ export default class Register extends Component {
                     user.image = url
                 })
         }
+        if (this.props.user.address !== this.state.address) {
+            mapCalls.getUserAddress(this.state)
+                .then(async (location) => {
+                    const currentAddress = location.results[0].locations[0].latLng
+                    user.lat = currentAddress.lat
+                    user.long = currentAddress.lng
+                    await API.editUserProfile(this.props.user.uid, user)
+                    await this.props.update()
+                })
+        } else {
 
-        await API.editUserProfile(this.props.user.uid, user)
-        await this.props.update()
-        this.props.cancel("editModalVis")
+            await API.editUserProfile(this.props.user.uid, user)
+            await this.props.update()
+        }
+
 
     }
 

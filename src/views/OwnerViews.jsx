@@ -86,25 +86,27 @@ export default class OwnerViews extends Component {
                 />
                 <Route exact path="/owners/paths/:id" render={(props) => {
                     if (this.isAuthenticated()) {
+
                         let invoice = this.state.invoices.find(invoice =>
                             invoice.id === props.match.params.id
                         )
                         if (!invoice) {
-                            invoice = {
-                                ammount: null,
-                                date: null,
-                                distance: null,
-                                dogName: null,
-                                ownerId: null,
-                                ownerFirstName: null,
-                                ownerLastName: null,
-                                walkerId: null,
-                                walkerFirstName: null,
-                                walkerLastName: null,
-                                path: [],
-                                resolved: null,
-                                dogImg: null
-                            }
+                            // invoice = {
+                            //     ammount: null,
+                            //     date: null,
+                            //     distance: null,
+                            //     dogName: null,
+                            //     ownerId: null,
+                            //     ownerFirstName: null,
+                            //     ownerLastName: null,
+                            //     walkerId: null,
+                            //     walkerFirstName: null,
+                            //     walkerLastName: null,
+                            //     path: [],
+                            //     resolved: null,
+                            //     dogImg: null
+                            // }
+                            return
                         }
                         return <PathModal {...props}
                             invoice={invoice}
