@@ -29,7 +29,7 @@ class InvoiceCard extends Component {
                                 <h2>{this.props.invoice.dogName}</h2>
                                 <h3>{this.props.invoice.date}</h3>
                                 <h3>Walker Name: {this.props.invoice.walkerFirstName} {this.props.invoice.walkerLastName}</h3>
-                                <h4>${this.props.invoice.ammount}</h4>
+                                <h4>${parseFloat(this.props.invoice.ammount).toFixed(2)}</h4>
                             </Col>
                         </Row>
                     </Row>

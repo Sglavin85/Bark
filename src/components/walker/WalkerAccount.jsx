@@ -19,11 +19,12 @@ export default class Invoices extends Component {
             .then(invoices => {
                 const invoiceArray = Object.values(invoices)
                 const parsedInvoices = invoiceArray.filter(invoice => !invoice.resolved)
-                var totalCost = 0
+                var totalCost = 0.00
                 parsedInvoices.forEach(invoice => {
-                    totalCost = totalCost + invoice.ammount
+                    var ammount = parseFloat(invoice.ammount)
+                    totalCost = (totalCost + ammount)
                 });
-                this.setState({ invoices: parsedInvoices, total: totalCost, user: this.props.user })
+                this.setState({ invoices: parsedInvoices, total: totalCost.toFixed(2), user: this.props.user })
             })
     }
 
@@ -39,6 +40,13 @@ export default class Invoices extends Component {
 
     }
 
+    calcTotal() {
+        var currentTotal = parseFloat(this.state.user.account)
+        var pendingTotal = parseFloat(this.state.total)
+        var total = (currentTotal + pendingTotal)
+        total.toFixed()
+        return total
+    }
 
 
     render() {
@@ -64,13 +72,13 @@ export default class Invoices extends Component {
                                 <h1>Summary</h1>
                                 <Row type="flex" justify="start">
                                     <Col span={24}>
-                                        <h3>CURRENT TOTAL: ${this.state.user.account}</h3>
+                                        <h3>CURRENT TOTAL: ${this.state.user.account.toFixed(2)}</h3>
                                         <h3>PENDING PAYMENTS: ${this.state.total}</h3>
                                     </Col></Row>
                                 <div className="firstHR"></div>
                                 <Row type="flex" justify="start">
                                     <Col >
-                                        <h2>TOTAL: ${this.state.total + this.props.user.account}</h2>
+                                        <h2>TOTAL: ${this.calcTotal()}</h2>
 
                                     </Col></Row>
                             </Col>
