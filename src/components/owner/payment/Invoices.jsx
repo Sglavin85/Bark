@@ -19,6 +19,11 @@ export default class Invoices extends Component {
         return calculatedFees
     }
 
+    calcTotal = () => {
+        var calculatedTotal = (parseFloat(this.props.total) + this.calcFees())
+        return calculatedTotal
+    }
+
     render() {
         return (
             <>
@@ -50,7 +55,7 @@ export default class Invoices extends Component {
                                         <div className="firstHR"></div>
                                         <Row type="flex" justify="start">
                                             <Col >
-                                                <h2>TOTAL: ${this.props.total + this.calcFees()}</h2>
+                                                <h2>TOTAL: ${this.calcTotal()}</h2>
                                             </Col>
                                         </Row>
 

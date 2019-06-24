@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-import { Row, Col, Modal, Button } from 'antd'
+import { Row, Col, Button } from 'antd'
 import '../../../maps/map.css'
 import L from 'leaflet'
 import API from '../../../modules/API'
+import WalkerCard from '../../walker/WalkerCard'
+import WalkerReviewModal from '../../walker/WalkerReviewModal'
+
+const ButtonGroup = Button.Group
+
 
 export default class PathModal extends Component {
     constructor(props) {
@@ -11,13 +16,17 @@ export default class PathModal extends Component {
             ownerFence: [],
             lat: '',
             long: '',
-            path: this.props.invoice.path
+            path: this.props.invoice.path,
+            isWalkerPage: false,
+            reviewModalVis: false
+
         }
 
 
     }
     componentDidMount() {
-        debugger
+        API.getWalker(this.props.invoice.walkerId)
+            .then(walker => this.setState({ walker: walker }, () => { this.setState({ isWalkerReady: true }) }))
         API.getFence(this.props.invoice.ownerId)
             .then(fence => this.setState({ ownerFence: fence }, () => {
                 API.getOwner(fence[0].userId)
@@ -33,14 +42,47 @@ export default class PathModal extends Component {
                         }).addTo(this.map);
                         const fenceRender = L.polygon(this.state.ownerFence[0].fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
                         fenceRender.addTo(this.map)
-                        const pathRender = L.polyline(this.state.path, { lineCap: 'circle', color: '#324759' })
+                        const pathRender = L.polyline(this.state.path, { lineCap: 'circle', color: '#256EFF' })
                         pathRender.addTo(this.map)
                     }))
             }))
+        API.getWalkerReviews(this.props.invoice.walkerId)
+            .then(reviews => {
+                const parsedReviews = Object.values(reviews)
+                this.setState({ reviews: parsedReviews })
+            })
     }
 
     cancel = () => {
         this.props.history.goBack()
+    }
+
+    modal = (modal) => {
+        const stateToChange = { [modal]: true }
+        this.setState(
+            stateToChange
+        )
+    }
+
+    cancelModal = (modal) => {
+        const stateToChange = { [modal]: false }
+        this.setState(
+            stateToChange
+        )
+    }
+
+    updateDetails = () => {
+        return API.getWalkerReviews(this.state.walker.uid)
+            .then(reviews => {
+                const reviewsArray = Object.values(reviews)
+                this.setState({ reviews: reviewsArray })
+            })
+            .then(() => {
+                API.getWalker(this.state.walker.uid)
+                    .then(updatedWalker => this.setState({ walker: updatedWalker })
+                    )
+            })
+
     }
 
     render() {
@@ -49,20 +91,42 @@ export default class PathModal extends Component {
 
                 <Row type="flex" justify="center">
                     <Col>
+                        <h1>{this.props.invoice.dogName}'s Walk</h1>
+                        <Row type='flex' justify='center'>
+                            <Col>
+                                <ButtonGroup>
+                                    <Button type="primary" onClick={() => this.modal("reviewModalVis")}>Review Walker</Button>
+
+                                    <Button type="primary" onClick={this.cancel}>
+                                        Go Back</Button>
+                                </ButtonGroup>
+
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
 
                 <Row type="flex" justify="center">
                     <Col>
-                        <h1>{this.props.invoice.dogName}'s Walk</h1>
-                        <Row type='flex' justify='center'>
-                            <Col>
-                                <Button type="primary" onClick={this.cancel}>
-                                    Go Back</Button>
-                            </Col></Row>
+                        {this.state.isWalkerReady ? <div className="walkerCard">
+                            <WalkerCard walker={this.state.walker} isWalkerPage={this.state.isWalkerPage} />
+                        </div> : null
+                        }
+                    </Col>
+                    <Col>
                         <div id="map"></div>
                     </Col>
                 </Row>
+
+                {
+                    this.state.reviewModalVis ? <WalkerReviewModal
+                        vis={this.state.reviewModalVis}
+                        cancel={() => this.cancelModal('reviewModalVis')}
+                        walker={this.state.walker}
+                        update={this.updateDetails}
+                        reviews={this.state.reviews}
+                    /> : null
+                }
 
             </>
         )

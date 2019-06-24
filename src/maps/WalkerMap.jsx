@@ -4,11 +4,11 @@ import './map.css'
 import { Row, Col, Button, Modal } from 'antd'
 import { isPointInPolygon, getDistance } from 'geolib'
 import API from '../modules/API';
-import { tsNamespaceExportDeclaration } from '@babel/types';
+import { withRouter } from 'react-router'
 
 const warning = Modal.warning;
 
-export default class Map extends Component {
+class Map extends Component {
     constructor(props) {
         super(props)
 
@@ -21,11 +21,11 @@ export default class Map extends Component {
             endTime: "",
             walkLength: "",
             walkPath: [],
-            currentUser: ''
+            currentUser: '',
         }
         this.fenceRender = L.polygon(this.state.userFence.fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
 
-        this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#324759' })
+        this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#05B2DC' })
 
         this.marker = null
     }
@@ -44,7 +44,9 @@ export default class Map extends Component {
             id: 'mapbox.streets'
         }).addTo(this.map);
 
+
         this.fenceRender.addTo(this.map)
+        this.map.fitBounds(this.state.userFence.fence)
     }
 
     trackWalk = () => {
@@ -126,8 +128,8 @@ export default class Map extends Component {
 
             var walkCost = 10
 
-            const distCost = distanceWalked * 0.01
-            const timeCost = this.state.walkLength * 0.01666
+            const distCost = distanceWalked * 0.005
+            const timeCost = this.state.walkLength * 0.008
             const realWalkCost = distCost + timeCost
             if (realWalkCost > 10) {
                 walkCost = realWalkCost
@@ -140,7 +142,7 @@ export default class Map extends Component {
                 day: "2-digit"
             })
             const obj = {
-                ammount: walkCost,
+                ammount: walkCost.toFixed(2),
                 date: newDate,
                 distance: distanceWalked,
                 dogName: this.props.dog.name,
@@ -158,6 +160,7 @@ export default class Map extends Component {
             API.postInvoice(obj)
         })
 
+        this.props.history.push(`/walkers/dogs/dog/${this.props.dog.id}`)
     }
 
 
@@ -172,9 +175,9 @@ export default class Map extends Component {
                 <Row type="flex" justify="center">
                     <Col>
 
-                        <Button type="primary" onClick={() => this.handleStart()}>
+                        <Button type="primary" disabled={this.state.walkIsActive} onClick={() => this.handleStart()}>
                             Start Walk</Button>
-                        <Button type="primary" onClick={() => this.handleEnd()}>
+                        <Button type="primary" disabled={!this.state.walkIsActive} onClick={() => this.handleEnd()}>
                             End Walk</Button>
                     </Col>
                 </Row>
@@ -189,4 +192,6 @@ export default class Map extends Component {
             </>
         )
     }
-} 
+}
+
+export default withRouter(Map)
