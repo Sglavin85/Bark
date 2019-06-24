@@ -12,7 +12,7 @@ export default class Payments extends Component {
     state = {
         step: 0,
         invoices: [],
-        totalCost: '',
+        total: '',
         invoiceReturn: false
     }
 
@@ -24,8 +24,10 @@ export default class Payments extends Component {
                 var totalCost = 0
                 parsedInvoices.forEach(invoice => {
                     totalCost = totalCost + invoice.ammount
+
                 });
-                this.setState({ invoices: parsedInvoices, total: totalCost })
+                var parsedTotal = totalCost.toFixed(2)
+                this.setState({ invoices: parsedInvoices, total: parsedTotal })
             })
     }
 

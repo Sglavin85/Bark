@@ -70,10 +70,12 @@ const API = {
         review.id = key
         return firebase.database().ref(`animalReviews/${review.id}`).set(review)
     },
-    postOwnerFence: function (fence) {
-        var myRef = firebase.database().ref('fences/').push();
+    postOwnerFence: async function (fence) {
+        JSON.parse(JSON.stringify(fence))
+        var myRef = await firebase.database().ref('fences/').push();
         var key = myRef.key;
         fence.id = key
+
         return firebase.database().ref(`fences/${fence.id}`).set(fence)
     },
     getFence: function (ownerId) {
