@@ -25,7 +25,7 @@ class Map extends Component {
         }
         this.fenceRender = L.polygon(this.state.userFence.fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
 
-        this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#05B2DC' })
+        this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#256EFF' })
 
         this.marker = null
     }
@@ -59,6 +59,7 @@ class Map extends Component {
                 const lat = pos.coords.latitude;
                 const long = pos.coords.longitude;
                 this.map.setView([lat, long], 17);
+                API.trackWalk(this.props.dog.id, { lat: lat, long: long })
                 // add a marker to my location
                 this.marker = L.marker([lat, long])
                 this.marker.addTo(this.map);
@@ -109,6 +110,7 @@ class Map extends Component {
     }
 
     handleEnd = () => {
+        API.deleteWalk(this.props.dog.id)
         clearInterval(this.timeoutControl)
         const end = new Date()
         this.setState({ walkIsActive: false, endTime: end }, () => {

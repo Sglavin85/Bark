@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom'
 import AuthViews from './views/AuthViews';
 import WalkerViews from './views/WalkerViews';
 import OwnerViews from './views/OwnerViews'
+import API from './modules/API';
 
 
 
@@ -18,7 +19,10 @@ class Wag extends Component {
   state = {
     userIsOwner: sessionStorage.getItem('accountType') === 'owners',
     user: JSON.parse(sessionStorage.getItem('user')),
-    logo: 'logoLogout'
+    logo: 'logoLogout',
+    isDogBeingWalked: false,
+    dogs: [],
+    dogBeingWalked: {}
   }
 
 
@@ -27,10 +31,27 @@ class Wag extends Component {
     if (accountType === "owners") {
       this.setState({ userIsOwner: true })
       this.props.history.push(`/owners/home`)
+      API.getUserDogs(user).then(userDogs => {
+        const dogArray = Object.values(userDogs)
+        this.setState({ dogs: dogArray })
+      })
     } else {
       this.props.history.push(`/walkers/home`)
     }
   }
+
+  changeNavBar = (dog) => {
+
+    this.setState({ dogBeingWalked: dog }, () => {
+      console.log(this.state.dogBeingWalked)
+      this.setState({ isDogBeingWalked: true })
+    })
+  }
+
+  hideNavBar = () => {
+    this.setState({ isDogBeingWalked: false })
+  }
+
 
   logout = () => {
     sessionStorage.removeItem("user")
@@ -49,7 +70,7 @@ class Wag extends Component {
       <Layout className="layout">
         <div id="topStrip"></div>
         <Header>
-          <NavBar logout={this.logout} logo={this.state.logo} user={this.state.user} userIsOwner={this.state.userIsOwner} />
+          <NavBar logout={this.logout} isDogBeingWalked={this.state.isDogBeingWalked} logo={this.state.logo} dogBeingWalked={this.state.dogBeingWalked} user={this.state.user} userIsOwner={this.state.userIsOwner} />
         </Header>
         <Content>
           <Route path="/auth" render={(props) => {
@@ -61,7 +82,7 @@ class Wag extends Component {
           />
 
           <Route path="/owners" render={(props) => {
-            return <OwnerViews {...props} user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
+            return <OwnerViews {...props} changeNavBar={this.changeNavBar} hideNavBar={this.hideNavBar} user={this.state.user} dogs={this.state.dogs} userLoggedIn={this.props.userLoggedIn} />
           }}
           />
 

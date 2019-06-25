@@ -114,6 +114,15 @@ const API = {
     },
     editUserProfile: function (uid, obj) {
         return firebase.database().ref(`owners/${uid}`).update(obj)
+    },
+    trackWalk: function (dogId, obj) {
+        var myRef = firebase.database().ref(`animals/${dogId}/walk`).push();
+        var key = myRef.key
+        return firebase.database().ref(`animals/${dogId}/walk/${key}`).set(obj)
+    },
+    deleteWalk: function (dogId) {
+        const ref = firebase.database().ref(`animals/${dogId}`)
+        ref.child("walk").remove()
     }
 
 }
