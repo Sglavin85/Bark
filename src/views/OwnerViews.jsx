@@ -41,7 +41,7 @@ export default class OwnerViews extends Component {
 
     }
 
-    componentDidUpdate(prevProps, ) {
+    componentDidUpdate(prevProps) {
 
         if (this.props.dogs !== prevProps.dogs) {
             this.setState({ dogs: this.props.dogs }, () => {

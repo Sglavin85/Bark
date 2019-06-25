@@ -23,7 +23,7 @@ export default class LiveWatch extends Component {
 
     componentDidMount() {
         this.pathRender = L.polyline(this.props.path, { lineCap: 'circle', color: '#05B2DC' })
-
+        this.marker = L.marker(this.props.path[0])
         const currentUser = JSON.parse(sessionStorage.getItem("user"))
         this.setState({ user: currentUser })
         // create map
@@ -35,18 +35,20 @@ export default class LiveWatch extends Component {
             id: 'mapbox.streets'
         }).addTo(this.map);
 
-
+        this.marker.addTo(this.map)
         this.fenceRender.addTo(this.map)
         this.map.fitBounds(this.props.fence[0].fence)
 
     }
 
-    componentDidUpdate() {
-        this.pathRender = ''
-        this.pathRender = L.polyline(this.props.path, { lineCap: 'circle', color: '#05B2DC' })
-        if (this.marker !== null) {
-            this.marker.remove()
-            this.marker = L.marker(this.props.walkPath.pop())
+    componentDidUpdate(prevProps) {
+        if (this.props.path !== prevProps.path) {
+            this.pathRender = ''
+            this.pathRender = L.polyline(this.props.path, { lineCap: 'circle', color: '#05B2DC' })
+            if (this.marker !== null) {
+                this.marker.remove()
+                this.marker = L.marker(this.props.path.pop())
+            }
         }
     }
 
