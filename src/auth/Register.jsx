@@ -25,7 +25,7 @@ export default class Register extends Component {
         zip: "",
         image: ""
     }
-
+    //sets the account type so that the user is routed to the appropriate pages
     handleAccountType = (e) => {
         this.setState({ accountType: e.target.value })
     }
@@ -35,7 +35,7 @@ export default class Register extends Component {
         stateToChange[e.target.id] = e.target.value;
         this.setState(stateToChange);
     }
-
+    //formats date into the appropriate format for display
     handleDateChange = (evt) => {
         const date = evt.format("MM DD YYYY")
         this.setState({ birthday: date })
@@ -46,7 +46,7 @@ export default class Register extends Component {
     }
 
 
-
+    //on submit takes image and uploads it to the firebase server, then once it gets the url back from firebase it adds it to the user OBJ. Then it takes the address and sends a geocode request to mapquest to get the latittude and longitude and adds that to the user OBJ. Once the object is build (I use the callball function of setState to ensure the obj is up to date before moving on) I send the whole user OBJ up to the firebase server. finally I automatically log the user in and push them to the appropriate home page.
     submit = async (evt) => {
         evt.preventDefault()
         const accountType = this.state.accountType
@@ -73,7 +73,6 @@ export default class Register extends Component {
         }
     }
 
-    // type="password"
     render() {
         return (
             <Row type="flex" justify="center" >

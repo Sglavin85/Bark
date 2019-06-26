@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import API from '../../modules/API'
-import { Row, Col, Button } from 'antd'
+import { Row, Col } from 'antd'
 import DogCard from '../dogs/DogCard'
 import '../owner/owner.css'
 
@@ -13,6 +13,8 @@ export default class OwnerHomeView extends Component {
         isWalkerPage: false
     }
 
+    //on mount gets all dogs from the database and sets thems to state. also sets current user to state.
+
     componentDidMount() {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getAllDogs().then(dogs => {
@@ -21,6 +23,8 @@ export default class OwnerHomeView extends Component {
         })
         this.setState({ user: currentUser })
     }
+
+    //takes all the dogs and sorts them by reviews. then reverses the sort and slices off the first three dogs. this leaves us with the three highest rateed dogs in the array and we then display those dogs. We pass dog page as a boolean so that no buttons are renderesd on the compoenent as this is only an overview.
 
     makeDogCards = dogs => {
         if (this.state.dogs.length > 0) {

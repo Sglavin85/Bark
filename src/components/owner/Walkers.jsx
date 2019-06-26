@@ -16,6 +16,8 @@ export default class Walkers extends Component {
         )
     }
 
+    //maps over the walkers to render cards for each walker in the database 
+
     makeWalkerCards = walkers => {
 
         if (this.props.walkers.length > 0) {

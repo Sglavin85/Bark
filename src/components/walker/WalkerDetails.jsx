@@ -16,6 +16,8 @@ export default class WalkerDetails extends Component {
         walker: {}
     }
 
+    //on mount we set the state of the walker to the props that were passed in, if the user is the one looking at these details we will render the option to edit profile and if no we render a dog owner the option review the walker.
+
     componentDidMount() {
         const user = JSON.parse(sessionStorage.getItem('user'))
         this.setState({ walker: this.props.walker })
@@ -34,12 +36,23 @@ export default class WalkerDetails extends Component {
         }
     }
 
+    //modal visibility logic
+
     modal = (modal) => {
         const stateToChange = { [modal]: true }
         this.setState(
             stateToChange
         )
     }
+
+    cancelModal = (modal) => {
+        const stateToChange = { [modal]: false }
+        this.setState(
+            stateToChange
+        )
+    }
+
+    // function to update the user in session storage if the person viewing this page is the user. ensures that changes are seen as soon as submit is clicked
 
     updateWalker = () => {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
@@ -51,6 +64,8 @@ export default class WalkerDetails extends Component {
         })
 
     }
+
+    //computes age from the date of birth that is provided by the user on registration
 
     getAge = (DOB) => {
         var today = new Date();
@@ -64,13 +79,7 @@ export default class WalkerDetails extends Component {
         return age;
     }
 
-
-    cancelModal = (modal) => {
-        const stateToChange = { [modal]: false }
-        this.setState(
-            stateToChange
-        )
-    }
+    // if a review is made this ensure that the walkers average reviews and number of reviews is updated as soon as the review is submitted
 
     updateDetails = () => {
         return API.getWalkerReviews(this.props.walker.uid)

@@ -3,7 +3,6 @@ import { withRouter } from 'react-router'
 import { Route, Redirect } from 'react-router-dom'
 import WalkerHomeView from '../components/walker/WalkerHomeView'
 import WalkerDetails from '../components/walker/WalkerDetails'
-import WalkerCalendar from '../components/walker/WalkerCalendar'
 import WalkerDogViews from './WalkerDogViews'
 import WalkerAccount from '../components/walker/WalkerAccount'
 import Walks from '../components/walker/Walks'
@@ -41,15 +40,6 @@ class WalkerViews extends Component {
                 <Route exact path="/walkers/profile" render={(props) => {
                     if (this.isAuthenticated()) {
                         return <WalkerDetails {...props} isUser={true} walker={this.props.user} />
-                    } else {
-                        return <Redirect to="/auth/login"
-                        />
-                    }
-                }}
-                />
-                <Route exact path="/walkers/calendar" render={(props) => {
-                    if (this.isAuthenticated()) {
-                        return <WalkerCalendar {...props} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />

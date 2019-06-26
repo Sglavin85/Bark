@@ -31,6 +31,7 @@ export default class CreateModal extends Component {
 
     }
 
+    //creates the form that allows an owner to add a new dog to their dogs. the submit and cancel functinality are passed  from the higher component to ensure that the visibility is handled at the same time. All form inputs are saved into the state of this componenet and then the entire state is passed into the function as an argument.
 
     handleFieldChange = (e) => {
         const stateToChange = {};

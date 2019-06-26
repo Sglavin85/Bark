@@ -22,6 +22,9 @@ export default class Register extends Component {
         bio: ""
     }
 
+    //allows a user to edit their own information that they provided when they registered. the entire user object is passed in and is used to set state which is then used to pass the entire object up to the database upon submit.
+
+
     componentDidMount = () => {
         this.setState({
             firstName: this.props.walker.firstName,
@@ -44,6 +47,9 @@ export default class Register extends Component {
     handleStateChoice = (evt) => {
         this.setState({ state: evt })
     }
+
+    //on submit it looks to see if the image has changed, if it has then it sends the new image to firebase storage and waits for the url to combage  which it then appends the record to reflect the images new URL. Finally the new record is pushed to the database and then updated so that the changes are seen by the user after they hit the submit button and the modal closes.
+
 
     handleEditSubmit = async (walker) => {
         if (!!this.state.image) {

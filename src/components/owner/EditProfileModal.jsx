@@ -21,6 +21,8 @@ export default class Register extends Component {
         zip: ""
     }
 
+    //allows a user to edit their own information that they provided when they registered. the entire user object is passed in and is used to set state which is then used to pass the entire object up to the database upon submit.
+
     componentDidMount = () => {
         this.setState({
             firstName: this.props.user.firstName,
@@ -43,8 +45,9 @@ export default class Register extends Component {
         this.setState({ state: evt })
     }
 
+    //on submit it looks to see if the image has changed, if it has then it sends the new image to firebase storage and waits for the url to combage  which it then appends the record to reflect the images new URL. If the address is changed the an geocode request is made to mapquest to retriev the latittude and longitude of the new address provides by the user and those values are added to the obj. Finally the new record is pushed to the database and then updated so that the changes are seen by the user after they hit the submit button and the modal closes.
+
     handleEditSubmit = async (user) => {
-        debugger
         if (!!this.state.image) {
             const storageRef = firebase.storage().ref('profiles');
             const ref = storageRef.child(`${Date.now()}`);

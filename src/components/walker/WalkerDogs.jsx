@@ -12,6 +12,8 @@ export default class WalkerDogs extends Component {
         isWalker: true
     }
 
+    //gets all dogs on mount and sets all the dogs to the state
+
     componentDidMount() {
         API.getAllDogs()
             .then(allDogs => {
@@ -19,6 +21,8 @@ export default class WalkerDogs extends Component {
                 this.setState({ dogs: dogArray })
             })
     }
+
+    // maps over the array of all dogs and creates a card for each one. is walker is passed as true so that the appropriate buttons are rendered on the card.
 
     makeDogCards = dogs => {
 

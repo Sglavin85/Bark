@@ -20,6 +20,9 @@ export default class WalkerReviewCard extends Component {
         date: ""
     }
 
+    //on componentDidMount a new date is generated for the review which is automatically addeed to the record for the person that is writting the review. Then all of the appropriate information that is not required as input for the review record is added to state. 
+
+
     componentDidMount() {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         var newDate = new Date().toLocaleString("en-US", {
@@ -37,6 +40,8 @@ export default class WalkerReviewCard extends Component {
         this.setState(setState)
 
     }
+
+    //function that takes the new rating and gets a new average for the dog and appends the record for the dog.
 
     newRatingAvg = (userObj) => {
         const reviews = this.props.reviews

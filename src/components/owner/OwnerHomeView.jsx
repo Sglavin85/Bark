@@ -14,6 +14,8 @@ export default class OwnerHomeView extends Component {
         isWalkerPage: false
     }
 
+    //gets user from session storage then gets all the users dog and also gets all the walkers.
+
     componentDidMount() {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getUserDogs(currentUser).then(userDogs => {
@@ -26,6 +28,8 @@ export default class OwnerHomeView extends Component {
             this.setState({ walkers: walkerArray })
         })
     }
+
+    //makes cards for each dog that the owner has. passes dogpage as false so that no buttons render on the home page as this is just an overview.
 
     makeDogCards = dogs => {
         if (this.state.dogs.length > 0) {
@@ -42,6 +46,8 @@ export default class OwnerHomeView extends Component {
             return dogCards
         }
     }
+
+    //takes the walkers array array and then sorts them by thier rating, reverse the sort and slices off the first three which is set to a variable. This leaves us with the top three highest rated walkers which is then maped over to render their cards.
 
     makeWalkerCards = walkers => {
         if (this.state.walkers.length > 0) {

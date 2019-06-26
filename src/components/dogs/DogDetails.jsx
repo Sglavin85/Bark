@@ -15,6 +15,8 @@ export default class DogDetails extends Component {
         dog: {}
     }
 
+    //on componentDidMount this takes the url, which is the dogs Id, and gets all the information for the dog and then gets all the reviews for that dog.
+
     componentDidMount() {
 
         const thisDog = this.props.match.params.id
@@ -36,6 +38,8 @@ export default class DogDetails extends Component {
         )
     }
 
+    //a function that is declared for use when the dogs record is updated
+
     updateWalker = () => {
         var currentDog = this.props.match.params.id
         API.getDog(currentDog).then(updatedDog => {
@@ -50,6 +54,8 @@ export default class DogDetails extends Component {
             stateToChange
         )
     }
+
+    //updates the state so that when a review is added the dogs record of reviews is up to date
 
     updateDetails = () => {
         return API.getDogReviews(this.props.match.params.id)

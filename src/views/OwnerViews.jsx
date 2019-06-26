@@ -17,6 +17,7 @@ import "firebase/database"
 export default class OwnerViews extends Component {
     constructor(props) {
         super(props)
+        //declares and empty array for the listener refs to be stored in.
         this.refArray = []
     }
     state = {
@@ -46,18 +47,21 @@ export default class OwnerViews extends Component {
     }
 
     componentDidUpdate(prevProps) {
-
+        //once the dogs is loaded into the aprent components state then the refs will be created for each of the dogs that the owner has.
         if (this.props.dogs !== prevProps.dogs) {
-
+            //in case this is not the first update for the dogs in the parent components array this will turn off all the refs for an owner.
             this.refArray.forEach(ref => {
                 ref.off()
 
             })
+            //and then reset the array to be empty
             this.refArray = []
 
-
+            //sets the props to state and then on the callback from setstate iterates over the array to create listeners for the real time database 
             this.setState({ dogs: this.props.dogs }, () => {
                 this.props.dogs.forEach(dog => {
+
+                    //listens to the databse for a new child that is created. When a walk is started a new key is created called "walk" once the conditions are met then the navbar is changed to conditional render a button which allows the owner to go to the live tracking page and also opens a modal to alert the user that thier dog is being walked.
                     var walkRef = firebase.database().ref(`animals/${dog.id}`)
                     this.refArray.push(walkRef)
                     walkRef.on(`child_added`, (snapshot) => {
@@ -67,12 +71,16 @@ export default class OwnerViews extends Component {
                             this.startModal(dog)
                         }
                     })
+
+                    //listens to that child that was created and pulls any changes that come back. These changes are the lat and long of the current position of the  person walking thier dog. Once the new position is back they they are added to an array and then  pushed in to an array in state, which is passed to the component that renders the map.
                     var trackRef = firebase.database().ref(`animals/${dog.id}/walk`)
                     this.refArray.push(trackRef)
                     trackRef.on(`child_added`, (snapshot) => {
                         var parsedSnapshot = snapshot.val()
                         this.updatePath(parsedSnapshot.lat, parsedSnapshot.long)
                     })
+
+                    //listens to the database for the dogs record for anything that gets deleted. if the condition is met then the button on the nav bar goes away and the user is alerted that the walk has ended which will redirect them to the checkout page.
                     var endWalkRef = firebase.database().ref(`animals/${dog.id}`)
                     this.refArray.push(endWalkRef)
                     endWalkRef.on(`child_removed`, (_snapshot) => {
@@ -83,7 +91,7 @@ export default class OwnerViews extends Component {
             })
         }
     }
-
+    //notication modals
     startModal = (dog) => {
         Modal.confirm({
             title: `A Walk has started!`,
@@ -117,14 +125,14 @@ export default class OwnerViews extends Component {
             onCancel() { }
         })
     }
-
+    //adds the new coords to the array in state
     updatePath = (lat, long) => {
         debugger
         const newLatLong = [lat, long]
         const newArray = [...this.state.pathTrack, newLatLong]
         this.setState({ pathTrack: newArray })
     }
-
+    //if component is about to unmount (i.e. user logs out ) the listeners are turned off and the listener array is emptied.
     componentWillUnmount() {
 
         this.refArray.forEach(ref => {

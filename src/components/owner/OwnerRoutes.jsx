@@ -11,12 +11,13 @@ export default class OwnerRoutes extends Component {
         isStateBack: false
     }
 
+    //prepares the fence logic to ensure that if a fence exists that is is rendered on the the map component that is below.
+
     componentDidMount() {
 
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getFence(currentUser.uid)
             .then(fence => {
-                console.log(fence)
                 if (fence.length > 0) {
                     this.setState({ lat: currentUser.lat, long: currentUser.long, userFenceObj: fence }, () => { this.setState({ isStateBack: true }) })
                 } else {
