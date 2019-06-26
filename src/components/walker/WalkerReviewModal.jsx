@@ -20,7 +20,7 @@ export default class WalkerReviewCard extends Component {
         date: ""
     }
 
-    //on componentDidMount a new date is generated for the review which is automatically addeed to the record for the person that is writting the review. Then all of the appropriate information that is not required as input for the review record is added to state. 
+    //on componentDidMount a new date is generated for the review which is automatically addeed to the record for the person that is writting the review. Then all of the appropriate information that is not required as input for the review record is added to state.
 
 
     componentDidMount() {
