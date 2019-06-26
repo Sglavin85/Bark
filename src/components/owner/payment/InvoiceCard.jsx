@@ -9,7 +9,7 @@ class InvoiceCard extends Component {
     // allows the user to click on a specific invoice to see the details and the route that was walked.
 
     handleClick = () => {
-        this.props.history.push(`/owners/paths/${this.props.invoice.id}`)
+        this.props.history.push(`/${this.props.ownerWalker}/paths/${this.props.invoice.id}`)
     }
 
     render() {

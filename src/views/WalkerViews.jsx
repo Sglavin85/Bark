@@ -7,12 +7,14 @@ import WalkerDogViews from './WalkerDogViews'
 import WalkerAccount from '../components/walker/WalkerAccount'
 import Walks from '../components/walker/Walks'
 import API from '../modules/API'
+import PathModal from '../components/owner/payment/PathModal'
 
 
 
 class WalkerViews extends Component {
     state = {
-        dogs: []
+        dogs: [],
+        isOwner: false
     }
 
     componentDidMount() {
@@ -21,6 +23,12 @@ class WalkerViews extends Component {
                 const dogArray = Object.values(allDogs)
                 this.setState({ dogs: dogArray })
             })
+        API.getAllInvoices().then(invoices => {
+            if (invoices !== null) {
+                const parsedInvoices = Object.values(invoices)
+                this.setState({ invoices: parsedInvoices })
+            }
+        })
     }
 
     isAuthenticated = () => sessionStorage.getItem("user") !== null
@@ -90,6 +98,24 @@ class WalkerViews extends Component {
                     } else {
                         return <Redirect to="/auth/login"
                         />
+                    }
+                }}
+                />
+                <Route exact path="/walkers/paths/:id" render={(props) => {
+                    if (this.isAuthenticated()) {
+
+                        let invoice = this.state.invoices.find(invoice =>
+                            invoice.id === props.match.params.id
+                        )
+                        if (!invoice) {
+                            return
+                        }
+                        return <PathModal {...props}
+                            isOwner={this.state.isOwner}
+                            invoice={invoice}
+                        />
+                    } else {
+                        return <Redirect to="/auth/login" />
                     }
                 }}
                 />

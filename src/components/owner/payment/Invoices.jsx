@@ -37,7 +37,7 @@ export default class Invoices extends Component {
                                         <Row type="flex" justify="start">
                                             <Col>
                                                 {this.props.invoices.map(invoice => {
-                                                    return <InvoiceCard key={invoice.id} invoice={invoice} />
+                                                    return <InvoiceCard key={invoice.id} ownerWalker="owners" invoice={invoice} />
                                                 })}
                                             </Col>
                                         </Row>
