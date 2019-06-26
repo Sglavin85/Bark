@@ -5,6 +5,7 @@ import { Row, Col, Button, Modal } from 'antd'
 import { isPointInPolygon, getDistance } from 'geolib'
 import API from '../modules/API';
 import { withRouter } from 'react-router'
+import keys from '../../keys/Keys'
 
 const warning = Modal.warning;
 
@@ -46,7 +47,7 @@ class Map extends Component {
         this.map = L.map('map', { drawControl: true })
             .setView([this.props.lat, this.props.long], 17)
         // add tiles to map
-        L.tileLayer("https://api.mapbox.com/styles/v1/sglavin85/cjwwh144ha2rx1cnz8qgmjfe6/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2dsYXZpbjg1IiwiYSI6ImNqd3dhdWh1OTBldWg0OWxna2VuZmVxMDIifQ.ME2N9N5umfgKgVu7vnC2cQ", {
+        L.tileLayer(keys.mapbox, {
             maxZoom: 18,
             id: 'mapbox.streets'
         }).addTo(this.map);
