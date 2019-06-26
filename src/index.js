@@ -5,7 +5,7 @@ import Wag from './Wag';
 import { BrowserRouter as Router } from "react-router-dom"
 import * as firebase from 'firebase/app';
 import "firebase/database"
-import keys from '../keys/Keys'
+import keys from './keys/Keys'
 
 const firebaseConfig = keys.firebase;
 

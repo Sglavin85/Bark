@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import L from 'leaflet';
 import '../../maps/map.css'
 import { Row, Col } from 'antd'
-import keys from '../../../keys/Keys'
+import keys from '../../keys/Keys'
 
 
 export default class LiveWatch extends Component {

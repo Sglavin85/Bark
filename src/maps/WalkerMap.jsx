@@ -5,7 +5,7 @@ import { Row, Col, Button, Modal } from 'antd'
 import { isPointInPolygon, getDistance } from 'geolib'
 import API from '../modules/API';
 import { withRouter } from 'react-router'
-import keys from '../../keys/Keys'
+import keys from '../keys/Keys'
 
 const warning = Modal.warning;
 

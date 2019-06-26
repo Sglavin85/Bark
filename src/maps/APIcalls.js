@@ -1,4 +1,4 @@
-import keys from '../../keys/Keys'
+import keys from '../keys/Keys'
 
 const mapCalls = {
     getUserAddress: function (user) {

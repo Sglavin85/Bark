@@ -5,7 +5,7 @@ import L from 'leaflet'
 import API from '../../../modules/API'
 import WalkerCard from '../../walker/WalkerCard'
 import WalkerReviewModal from '../../walker/WalkerReviewModal'
-import keys from '../../../../keys/Keys'
+import keys from '../../../keys/Keys'
 
 const ButtonGroup = Button.Group
 
