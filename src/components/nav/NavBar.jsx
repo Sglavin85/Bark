@@ -3,7 +3,6 @@ import logo from '../../images/logo_transparent.png'
 import OwnerLinks from './OwnerLinks'
 import WalkerLinks from './WalkerLinks'
 import './navbar.css'
-import { Button } from 'antd'
 
 export default class NavBar extends Component {
 
@@ -11,11 +10,12 @@ export default class NavBar extends Component {
         logo: this.props.logo
     }
 
+    //on componentDidMount the  nav bar is only displayed if the user is logged in. Below in the render the appropriate nav bar will render based on the account type that is logged in to the application.
+
     componentDidMount() {
         if (this.props.userLoggedIn === true) {
             this.setState({ logo: null })
         }
-        console.log(this.props.params)
     }
 
     render() {

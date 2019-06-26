@@ -19,6 +19,8 @@ export default class WalkerDetails extends Component {
         editModalVis: false,
     }
 
+    //allows a user to see thier current profile and most importantly allows them to edit their profile through the use of a modal.
+
     componentDidMount() {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         this.setState({ user: currentUser }, () => {
@@ -28,12 +30,22 @@ export default class WalkerDetails extends Component {
 
     }
 
+    //modal visibility logic
+
     modal = (modal) => {
         const stateToChange = { [modal]: true }
         this.setState(
             stateToChange
         )
     }
+
+    cancelModal = (modal) => {
+        const stateToChange = { [modal]: false }
+        this.setState(
+            stateToChange
+        )
+    }
+    //updates the current user and updates the session storage item to reflect the updated profile. and then once all functions are complete the edit modal is closed which allows the user to see the changes that were made immediately.
 
     updateUser = () => {
 
@@ -48,7 +60,7 @@ export default class WalkerDetails extends Component {
         })
     }
 
-
+    //takes the Date of birth provided by the user and subtracts it from todays take which we then use to return the age of the user.
 
     getAge = (DOB) => {
         var today = new Date();
@@ -61,15 +73,6 @@ export default class WalkerDetails extends Component {
 
         return age;
     }
-
-
-    cancelModal = (modal) => {
-        const stateToChange = { [modal]: false }
-        this.setState(
-            stateToChange
-        )
-    }
-
 
 
     render() {

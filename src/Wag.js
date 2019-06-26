@@ -43,7 +43,6 @@ class Wag extends Component {
   changeNavBar = (dog) => {
 
     this.setState({ dogBeingWalked: dog }, () => {
-      console.log(this.state.dogBeingWalked)
       this.setState({ isDogBeingWalked: true })
     })
   }

@@ -12,6 +12,9 @@ export default class Walks extends Component {
             owner: ""
         }
     }
+
+    //prepares the fence logic to ensure that if a fence exists that is is rendered on the the map component that is below, this is done by using the dogs Id to get the dog record and then using the ownerId from that to retrieve the fence record.
+
     componentDidMount() {
         const thisDog = this.props.match.params.id
         API.getDog(thisDog)

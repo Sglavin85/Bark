@@ -15,6 +15,8 @@ export default class DogCard extends Component {
         deleteModalVis: false,
     }
 
+    //on componentDidMount this switches the language of the dog selection which is "male" or "female" to man and woman for the sake of the iconography used by the CSS Framework
+
     componentDidMount() {
 
         if (this.props.dog.gender === "female") {
@@ -37,11 +39,15 @@ export default class DogCard extends Component {
         })
     }
 
+    //Deletes a record and updates state one level up
+
 
     handleDeleteSubmit = async (id) => {
         await API.deleteUserDog(id)
         this.props.update()
     }
+
+    //Modal for the delete button
 
     showDeleteConfirm = () => {
         confirm({

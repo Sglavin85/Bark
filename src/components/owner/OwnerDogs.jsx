@@ -17,7 +17,7 @@ export default class OwnerDogs extends Component {
         createModalVis: false
     }
 
-
+    // on mount gets the current user out of session storage and then gets that users dogs from the database. 
     componentDidMount() {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getUserDogs(currentUser).then(userDogs => {
@@ -28,6 +28,8 @@ export default class OwnerDogs extends Component {
         this.setState({ user: currentUser })
 
     }
+
+    //modal visibility logic
 
     modal = (modalName) => {
         const stateToChange = { [modalName]: true }
@@ -42,6 +44,8 @@ export default class OwnerDogs extends Component {
             [modalName]: false
         })
     }
+
+    //create a dog logic that is passed to the create modal/
 
     handleCreateSubmit = (obj) => {
         const storageRef = firebase.storage().ref('profiles');
@@ -61,6 +65,8 @@ export default class OwnerDogs extends Component {
         })
     }
 
+    //an update logic that ensure that any changes to dogs or added dogs are reflected as soon as the submission is made to the database.
+
     updateDogs = () => {
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getUserDogs(currentUser).then(userDogs => {
@@ -68,6 +74,8 @@ export default class OwnerDogs extends Component {
             this.setState({ dogs: dogArray })
         })
     }
+
+    //maps over the array of  dogs and renders a card for each dog.
 
     makeDogCards = dogs => {
         if (this.state.dogs.length > 0) {

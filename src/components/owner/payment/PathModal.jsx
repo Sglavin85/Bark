@@ -21,9 +21,9 @@ export default class PathModal extends Component {
             reviewModalVis: false
 
         }
-
-
     }
+
+    //this view is what renders to show the details of a walk that has happened but has not yet been resolved. On Mount  we get the walker using ther id that is attached to the invoice and post that next to a map of the route that was walked which is saved as part fo the invoice object. We also get the fence that the owner uses for their dogs using the owners Id which is also attached to the invoice object. then we render the map and display the fence and the path.
     componentDidMount() {
         API.getWalker(this.props.invoice.walkerId)
             .then(walker => this.setState({ walker: walker }, () => { this.setState({ isWalkerReady: true }) }))
@@ -53,10 +53,13 @@ export default class PathModal extends Component {
             })
     }
 
+    //pushes the user back to the account page that they came from
+
     cancel = () => {
         this.props.history.goBack()
     }
 
+    //modal visibility functions for the review modal that the owner can leave for the walker.
     modal = (modal) => {
         const stateToChange = { [modal]: true }
         this.setState(
@@ -70,6 +73,8 @@ export default class PathModal extends Component {
             stateToChange
         )
     }
+
+    //if a user leaves a review then this will update all of the appropriate records and then update state so that the new review is reflected in their average reviews.
 
     updateDetails = () => {
         return API.getWalkerReviews(this.state.walker.uid)

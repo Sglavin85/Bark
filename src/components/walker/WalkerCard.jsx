@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 
 class WalkerCard extends Component {
 
-
+    //for the card to display the walker the entire walker object is passed in as props and all the logic that is computer is to change the date of birth provided by the user into thier current age.
 
     getAge = (DOB) => {
         var today = new Date();

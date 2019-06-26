@@ -6,6 +6,8 @@ import { PawIcon } from '../../modules/pawprint'
 
 export default class Review extends Component {
 
+    //renders existing reviews
+
     render() {
         const cardImg = { backgroundImage: `url(${this.props.review.reviewImg})` }
 

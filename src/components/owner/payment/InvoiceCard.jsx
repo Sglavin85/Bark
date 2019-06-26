@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Card, Modal, Button, Row, Col } from 'antd'
+import { Row, Col } from 'antd'
 import './payment.css'
 import { withRouter } from 'react-router-dom'
 
 class InvoiceCard extends Component {
 
 
+    // allows the user to click on a specific invoice to see the details and the route that was walked.
 
     handleClick = () => {
         this.props.history.push(`/owners/paths/${this.props.invoice.id}`)

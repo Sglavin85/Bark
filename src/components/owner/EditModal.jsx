@@ -22,6 +22,8 @@ export default class EditModal extends Component {
         gender: "",
     }
 
+    //this allows a dog to be edited after it has already been added. the entire dog object is passed to this component from higher and is then set to state. each input is that set with the value of that corresponding value and then once the editing is complete the entire object is reset on the database.
+
     componentDidMount = () => {
         this.setState({
             id: this.props.dog.id,
@@ -46,6 +48,8 @@ export default class EditModal extends Component {
     handleGenderChoice = (evt) => {
         this.setState({ gender: evt })
     }
+
+    //handles the submit and ensures that the new additions are visible to the user immediately after hitting submit, this is done by using async and await which waits for everything to be done before getting the new object and updating the dog at the higher component and then wait for that update to complete before closing the modal.
 
     handleEditSubmit = async (dogObj) => {
 

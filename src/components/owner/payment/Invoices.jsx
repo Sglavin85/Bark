@@ -5,29 +5,28 @@ import '../owner.css'
 
 export default class Invoices extends Component {
 
-    state = {
-        hasInvoices: false
-    }
 
-    componentDidMount() {
-        if (this.props.invoices.length === 0) {
-            this.setState({ hasInvoices: true })
-        }
-    }
+
+
+    // calculates the ammount of fees that the application charges (currently 2 USD per walk)
+
     calcFees = () => {
         var calculatedFees = parseInt(this.props.invoices.length * 2)
         return calculatedFees
     }
 
+    //adds the invoice ammount and the total fees to display to the user the total charge that they owe.
+
+
     calcTotal = () => {
         var calculatedTotal = (parseFloat(this.props.total) + this.calcFees())
-        return calculatedTotal
+        return calculatedTotal.toFixed(2)
     }
 
     render() {
         return (
             <>
-                {this.state.hasInvoices ?
+                {this.props.areNoInvoices ? <h1>You Have No Pending Invoices</h1> :
                     <div className="CartContainer">
                         <Row type="flex" justify="center">
                             <Col span={16}>
@@ -70,7 +69,7 @@ export default class Invoices extends Component {
                         </Row>
 
                     </div>
-                    : <h1>You Have No Pending Invoices</h1>}
+                }
             </>
         )
     }

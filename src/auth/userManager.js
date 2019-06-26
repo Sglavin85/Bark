@@ -1,12 +1,16 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
+//This file handles all of the authentication and storage functions which allow the user to interact with firebase. For the sake of making it more readable I seperated these functions from the functions which interact with the real time database. The only interactions this file has with the databse is the intial registration for a new user.
+
 const url = 'https://wag-app-d212c.firebaseio.com';
 
 const setUserInSessionStorage = (user, accountType) => {
     sessionStorage.setItem('user', JSON.stringify(user));
     sessionStorage.setItem('accountType', accountType)
 }
+
+//created a new account and passwork with firebase authentication then deletes the password from the OBJ and saves the remaining OBJ to session storage
 
 export const registerUser = (user, accountType) => {
     return registerWithFirebase(user.email, user.password)
@@ -21,6 +25,8 @@ export const registerUser = (user, accountType) => {
         })
 }
 
+//saves new user to the firebase database
+
 export const saveUserToFirebaseServer = (user, accountType) => {
     const userToAdd = user
     delete userToAdd.accountType
@@ -29,11 +35,14 @@ export const saveUserToFirebaseServer = (user, accountType) => {
     return userToAdd;
 }
 
+// gets a user from the server (for user after registration as the API file was not yet created)
 
 export const getUser = (userId, accountType) => {
     return fetch(`${url}/${accountType}/${userId}.json`)
         .then(res => res.json());
 }
+
+//Check with firebase authentication to ensure that a user and password exists and that they match
 
 const loginWithFirebase = (email, password) => {
     return firebase.auth().signInWithEmailAndPassword(email, password)
@@ -63,6 +72,8 @@ export const getUserFromSessionStorage = () => {
 export const logout = () => {
     sessionStorage.removeItem('user');
 }
+
+//creates a new instance of firebase authentication using email and password
 
 export const registerWithFirebase = (email, password) => {
     return firebase.auth().createUserWithEmailAndPassword(email, password)

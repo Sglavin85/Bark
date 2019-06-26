@@ -9,6 +9,8 @@ class OwnerLinks extends Component {
         current: "/owners/home",
     };
 
+    //Current is changed based on the the route that is current at which makes a little blue underline on  that nav bar.
+
     handleClick = e => {
         this.setState({
             current: e.key,
@@ -16,6 +18,7 @@ class OwnerLinks extends Component {
     };
 
 
+    //if a dog is actively being walked the buttton which allows the owner to view that edog being walked is rendered and when the walk ends the button will go away.
 
     render() {
 

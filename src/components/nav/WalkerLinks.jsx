@@ -9,6 +9,8 @@ class OwnerLinks extends Component {
         current: "/walkers/home",
     };
 
+    //Current is changed based on the the route that is current at which makes a little blue underline on  that nav bar.
+
     handleClick = e => {
         this.setState({
             current: e.key,

@@ -13,27 +13,39 @@ export default class Payments extends Component {
         step: 0,
         invoices: [],
         total: '',
-        invoiceReturn: false
+        invoiceReturn: false,
+        areNoInvoices: false
     }
+
+    //this componenet manages the steps for the checkout process for a dog owner. on mount they get all invoices associated with the user ID and then we filter out all the invoices that are resolved. then we iterate over them and calculate out total costs. If their are no invoices we change a boolean to true so that we can conditionally render a message that says their are no invoices that need attention.
 
     componentDidMount() {
         API.getInvoicesByOwnerId(this.props.user.uid)
             .then(invoices => {
                 const invoiceArray = Object.values(invoices)
                 const parsedInvoices = invoiceArray.filter(invoice => !invoice.resolved)
-                var totalCost = 0
+                var totalCost = 0.00
                 parsedInvoices.forEach(invoice => {
-                    totalCost = totalCost + invoice.ammount
+                    totalCost = totalCost + parseFloat(invoice.ammount)
 
                 });
                 var parsedTotal = totalCost.toFixed(2)
-                this.setState({ invoices: parsedInvoices, total: parsedTotal })
+                this.setState({ invoices: parsedInvoices, total: parsedTotal }, () => {
+                    if (this.state.invoices.length === 0) {
+                        this.setState({ areNoInvoices: true })
+                    }
+                })
             })
+
     }
+
+    //function that changes the steps along the checkout process... is passed to all lower components.
 
     changeStep = (stepNum) => {
         this.setState({ step: stepNum })
     }
+
+    //allows for the conitionally render multiple things using a ternary operator.
 
     checkStep = (step) => {
         if (this.state.step === step)
@@ -55,9 +67,9 @@ export default class Payments extends Component {
                         </Col>
                     </Row>
                 </div>
-                {this.checkStep(0) ? <Invoices invoices={this.state.invoices} total={this.state.total} changeStep={this.changeStep} /> : null}
+                {this.checkStep(0) ? <Invoices areNoInvoices={this.state.areNoInvoices} invoices={this.state.invoices} total={this.state.total} changeStep={this.changeStep} /> : null}
                 {this.checkStep(1) ? <ConfirmPayment invoices={this.state.invoices} total={this.state.total} changeStep={this.changeStep} /> : null}
-                {this.checkStep(2) ? <Confirmation /> : null}
+                {this.checkStep(2) ? <Confirmation invoices={this.state.invoices} /> : null}
             </>
         )
     }

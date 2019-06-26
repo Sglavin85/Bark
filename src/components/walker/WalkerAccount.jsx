@@ -14,6 +14,8 @@ export default class Invoices extends Component {
         }
     }
 
+    //on mount this gets all invoices that match the walkers user Id and fiters out the resolved invoices. then does the math to compute the total that is owed to them
+
     componentDidMount() {
         API.getInvoicesByWalkerId(this.props.user.uid)
             .then(invoices => {
@@ -27,6 +29,8 @@ export default class Invoices extends Component {
                 this.setState({ invoices: parsedInvoices, total: totalCost.toFixed(2), user: this.props.user })
             })
     }
+
+    //function to notionally remove money from the application to the users personal account however all this does is change the value of thier account to 0 and update the component to reflect the 0 value
 
     handleClick = () => {
         const walkerUpdateObj = { account: 0 }
@@ -44,8 +48,8 @@ export default class Invoices extends Component {
         var currentTotal = parseFloat(this.state.user.account)
         var pendingTotal = parseFloat(this.state.total)
         var total = (currentTotal + pendingTotal)
-        total.toFixed()
-        return total
+
+        return parseFloat(total).toFixed(2)
     }
 
 
@@ -72,7 +76,7 @@ export default class Invoices extends Component {
                                 <h1>Summary</h1>
                                 <Row type="flex" justify="start">
                                     <Col span={24}>
-                                        <h3>CURRENT TOTAL: ${this.state.user.account.toFixed(2)}</h3>
+                                        <h3>CURRENT TOTAL: ${parseFloat(this.state.user.account).toFixed(2)}</h3>
                                         <h3>PENDING PAYMENTS: ${this.state.total}</h3>
                                     </Col></Row>
                                 <div className="firstHR"></div>

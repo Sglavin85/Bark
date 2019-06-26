@@ -16,8 +16,12 @@ export default class Map extends Component {
             activeMarker: [],
             isActiveCalculating: true
         }
+
+        //create fence
         this.fenceRender = L.polygon(this.state.userFence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
+        //storage for markers
         this.markers = []
+        //iterates over the fence to create a marker everytime a new point in the polygon is added
         this.state.userFence.forEach(latLng => {
             const marker = L.marker(latLng, { draggable: true })
             this.markers.push(marker)
@@ -29,30 +33,6 @@ export default class Map extends Component {
 
 
 
-    // goToCurrentLocation = () => {
-    //     if (!this.map) return;
-
-    // navigator.geolocation.getCurrentPosition(pos => {
-    //     const lat = pos.coords.latitude;
-    //     const lon = pos.coords.longitude;
-
-    //     this.map.setView([lat, lon], 14);
-
-    // add a marker to my location
-    //     L.marker([lat, lon])
-    //         .bindPopup('This is your current <strong>Location</strong>')
-    //         .addTo(this.map);
-    // }, err => {
-    //     console.log(err);
-    // });
-
-    // draw a polyline
-    // L.polyline([
-    //     [36.13427, -86.759205],
-    //     [36.130111, -86.754999],
-    //     [36.125431, -86.752424]
-    // ]).addTo(this.map);
-    // }
 
     componentDidMount() {
         // create map
@@ -65,6 +45,7 @@ export default class Map extends Component {
             id: 'mapbox.streets'
         }).addTo(this.map);
 
+        //logic to handle the change of the marker location which in turn changes the boundaries of the fence. is fired when the dragging of a marker is completed.
 
         const handleMarkerDrag = (e) => {
 
@@ -83,6 +64,8 @@ export default class Map extends Component {
             }
         }
 
+        //stores the active drage marker in the state so that it can be referenced against the previous fence to know which point to update in the fences array. is fired when a user begins to drag a marker
+
         const changeActiveDragMarker = (e) => {
 
             const latLng = Object.values(e.target._latlng)
@@ -90,6 +73,8 @@ export default class Map extends Component {
         }
 
         this.fenceRender.addTo(this.map)
+
+        // on click logic for the map which adds a marker and adds the listeners for that marker for the drag start and drag end also adds the same point to the fence array. 
 
         this.map.on('click', event => {
 
@@ -104,6 +89,8 @@ export default class Map extends Component {
             this.fenceRender.setLatLngs(this.state.userFence)
         })
 
+        //if the markers are passed in by props with an existing fence this will add the listeners to the markers that already exist.
+
         this.markers.forEach((marker) => {
             marker.on('dragstart', changeActiveDragMarker)
             marker.on('dragend', handleMarkerDrag)
@@ -111,6 +98,7 @@ export default class Map extends Component {
         })
     }
 
+    //takes the last point out of the fence array and deletes it and also removes the associated marker.
 
     handleUndo = () => {
         let fenceArray = [...this.state.userFence]
@@ -124,6 +112,7 @@ export default class Map extends Component {
         })
     }
 
+    //clears the entire fence array and then deletes the fence that is stored in the database.
     handleClear = () => {
 
         this.markers.forEach(marker => {
@@ -139,6 +128,8 @@ export default class Map extends Component {
         }
 
     }
+
+    //takes all of the point from the fence array and adds a user id to the obj and pushes that object up to the databse for future reference. If a fence existed prior to visiting this page and was passed in through props then it edits the existing fence rather than posting new fence all together.
 
     handleSave = () => {
 
