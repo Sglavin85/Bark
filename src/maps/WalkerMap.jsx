@@ -25,7 +25,7 @@ class Map extends Component {
         }
         this.fenceRender = L.polygon(this.state.userFence.fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
 
-        this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#05B2DC' })
+        this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#256EFF' })
 
         this.marker = null
     }
@@ -59,6 +59,7 @@ class Map extends Component {
                 const lat = pos.coords.latitude;
                 const long = pos.coords.longitude;
                 this.map.setView([lat, long], 17);
+                API.trackWalk(this.props.dog.id, { lat: lat, long: long })
                 // add a marker to my location
                 this.marker = L.marker([lat, long])
                 this.marker.addTo(this.map);
@@ -109,9 +110,11 @@ class Map extends Component {
     }
 
     handleEnd = () => {
+
         clearInterval(this.timeoutControl)
         const end = new Date()
         this.setState({ walkIsActive: false, endTime: end }, () => {
+
             var timeDif = this.state.endTime - this.state.startTime
             timeDif /= 1000
             var timeDifInSeconds = Math.round(timeDif)
@@ -126,12 +129,12 @@ class Map extends Component {
 
             }
 
-            var walkCost = 10
+            var walkCost = 10.50
 
             const distCost = distanceWalked * 0.005
             const timeCost = this.state.walkLength * 0.008
             const realWalkCost = distCost + timeCost
-            if (realWalkCost > 10) {
+            if (realWalkCost > 10.50) {
                 walkCost = realWalkCost
             }
 
@@ -158,14 +161,16 @@ class Map extends Component {
             }
 
             API.postInvoice(obj)
-        })
+            API.deleteWalk(this.props.dog.id)
+            this.props.history.push(`/walkers/dogs/dog/${this.props.dog.id}`)
 
-        this.props.history.push(`/walkers/dogs/dog/${this.props.dog.id}`)
+        })
     }
 
 
     componentWillUnmount() {
         clearInterval(this.timeoutControl)
+
     }
 
     render() {

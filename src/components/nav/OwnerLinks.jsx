@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu } from 'antd'
+import { Menu, Button } from 'antd'
 import './navbar.css'
 import { withRouter } from 'react-router-dom'
 
 class OwnerLinks extends Component {
     state = {
-        current: this.props.location.pathname,
+        current: "/owners/home",
     };
 
     handleClick = e => {
@@ -21,6 +21,9 @@ class OwnerLinks extends Component {
 
         return (
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+                {this.props.isDogBeingWalked ? <Menu.Item key="/owners/walks">
+                    <Button type="primary" onClick={() => { this.props.history.push(`/owners/walks/${this.props.dog.id}`) }} ghost>Watch {this.props.dog.name}'s Walk</Button>
+                </Menu.Item> : null}
                 <Menu.Item key="/owners/home">
                     <Link className="nav-link" to="/owners/home">Home</Link>
                 </Menu.Item>

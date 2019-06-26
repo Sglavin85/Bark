@@ -19,11 +19,17 @@ export default class Login extends Component {
         const stateToChange = {};
         stateToChange[e.target.id] = e.target.value;
         this.setState(stateToChange);
+
+    }
+
+    handleEnter = (e) => {
+        if (e.key === "Enter") {
+            this.submit()
+        }
     }
 
 
-    submit = (evt) => {
-        evt.preventDefault()
+    submit = () => {
         const accountType = this.state.accountType
         login(this.state.email, this.state.password, accountType)
             .then((user) => {
@@ -62,6 +68,7 @@ export default class Login extends Component {
                                 id="password"
                                 placeholder="Password"
                                 onChange={this.handleFieldChange}
+                                onKeyUp={this.handleEnter}
                             />
                         </Form.Item>
                         <Form.Item>
