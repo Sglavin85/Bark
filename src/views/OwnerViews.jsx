@@ -15,6 +15,10 @@ import "firebase/database"
 
 
 export default class OwnerViews extends Component {
+    constructor(props) {
+        super(props)
+        this.refArray = []
+    }
     state = {
         invoices: [],
         dogs: [],
@@ -44,24 +48,33 @@ export default class OwnerViews extends Component {
     componentDidUpdate(prevProps) {
 
         if (this.props.dogs !== prevProps.dogs) {
+
+            this.refArray.forEach(ref => {
+                ref.off()
+
+            })
+            this.refArray = []
+
+
             this.setState({ dogs: this.props.dogs }, () => {
-                this.state.dogs.forEach(dog => {
+                this.props.dogs.forEach(dog => {
                     var walkRef = firebase.database().ref(`animals/${dog.id}`)
+                    this.refArray.push(walkRef)
                     walkRef.on(`child_added`, (snapshot) => {
                         var parsedSnapshot = snapshot.hasChildren()
-                        console.log(parsedSnapshot)
                         if (parsedSnapshot) {
                             this.props.changeNavBar(dog)
                             this.startModal(dog)
                         }
                     })
                     var trackRef = firebase.database().ref(`animals/${dog.id}/walk`)
+                    this.refArray.push(trackRef)
                     trackRef.on(`child_added`, (snapshot) => {
                         var parsedSnapshot = snapshot.val()
-                        console.log("lat", parsedSnapshot.lat, "long", parsedSnapshot.long)
                         this.updatePath(parsedSnapshot.lat, parsedSnapshot.long)
                     })
                     var endWalkRef = firebase.database().ref(`animals/${dog.id}`)
+                    this.refArray.push(endWalkRef)
                     endWalkRef.on(`child_removed`, (_snapshot) => {
                         this.props.hideNavBar()
                         this.endModal(dog)
@@ -110,6 +123,15 @@ export default class OwnerViews extends Component {
         const newLatLong = [lat, long]
         const newArray = [...this.state.pathTrack, newLatLong]
         this.setState({ pathTrack: newArray })
+    }
+
+    componentWillUnmount() {
+
+        this.refArray.forEach(ref => {
+            ref.off()
+
+        })
+        this.refArray = []
     }
 
     render() {

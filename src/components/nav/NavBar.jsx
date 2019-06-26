@@ -15,6 +15,7 @@ export default class NavBar extends Component {
         if (this.props.userLoggedIn === true) {
             this.setState({ logo: null })
         }
+        console.log(this.props.params)
     }
 
     render() {
@@ -26,12 +27,8 @@ export default class NavBar extends Component {
                         <div id="logoContainer" className='logoLogin'>
                             <img src={logo} alt="logo" className="nav-logo" />
                         </div>
-                        <div className="dogWalked">
-                            {/* {this.props.isDogBeingWalked ? <Button type="primary" onClick={() => { this.props.history.push(`/owners/walks/${this.props.dog.id}`) }} ghost>Watch {this.props.dog.name}'s Walk</Button>
-                                : null} */}
-                        </div>
                         {this.props.user ? (<div id="linksContainer">
-                            {this.props.userIsOwner ? <OwnerLinks isDogBeingWalked={this.props.isDogBeingWalked} dog={this.props.dogBeingWalked} logout={this.props.logout} /> : <WalkerLinks logout={this.props.logout} />}
+                            {this.props.userIsOwner ? <OwnerLinks {...this.props} isDogBeingWalked={this.props.isDogBeingWalked} dog={this.props.dogBeingWalked} logout={this.props.logout} /> : <WalkerLinks {...this.props} logout={this.props.logout} />}
                         </div>) : null}
                     </div>
                 </nav>

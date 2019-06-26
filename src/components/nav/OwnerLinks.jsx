@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 
 class OwnerLinks extends Component {
     state = {
-        current: this.props.location.pathname,
+        current: "/owners/home",
     };
 
     handleClick = e => {

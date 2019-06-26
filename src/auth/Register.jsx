@@ -45,6 +45,8 @@ export default class Register extends Component {
         this.setState({ state: evt })
     }
 
+
+
     submit = async (evt) => {
         evt.preventDefault()
         const accountType = this.state.accountType

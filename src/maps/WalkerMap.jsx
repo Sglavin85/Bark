@@ -110,10 +110,11 @@ class Map extends Component {
     }
 
     handleEnd = () => {
-        API.deleteWalk(this.props.dog.id)
+
         clearInterval(this.timeoutControl)
         const end = new Date()
         this.setState({ walkIsActive: false, endTime: end }, () => {
+
             var timeDif = this.state.endTime - this.state.startTime
             timeDif /= 1000
             var timeDifInSeconds = Math.round(timeDif)
@@ -128,12 +129,12 @@ class Map extends Component {
 
             }
 
-            var walkCost = 10
+            var walkCost = 10.50
 
             const distCost = distanceWalked * 0.005
             const timeCost = this.state.walkLength * 0.008
             const realWalkCost = distCost + timeCost
-            if (realWalkCost > 10) {
+            if (realWalkCost > 10.50) {
                 walkCost = realWalkCost
             }
 
@@ -160,14 +161,16 @@ class Map extends Component {
             }
 
             API.postInvoice(obj)
-        })
+            API.deleteWalk(this.props.dog.id)
+            this.props.history.push(`/walkers/dogs/dog/${this.props.dog.id}`)
 
-        this.props.history.push(`/walkers/dogs/dog/${this.props.dog.id}`)
+        })
     }
 
 
     componentWillUnmount() {
         clearInterval(this.timeoutControl)
+
     }
 
     render() {

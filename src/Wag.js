@@ -70,7 +70,7 @@ class Wag extends Component {
       <Layout className="layout">
         <div id="topStrip"></div>
         <Header>
-          <NavBar logout={this.logout} isDogBeingWalked={this.state.isDogBeingWalked} logo={this.state.logo} dogBeingWalked={this.state.dogBeingWalked} user={this.state.user} userIsOwner={this.state.userIsOwner} />
+          <NavBar {...this.props} logout={this.logout} isDogBeingWalked={this.state.isDogBeingWalked} logo={this.state.logo} dogBeingWalked={this.state.dogBeingWalked} user={this.state.user} userIsOwner={this.state.userIsOwner} />
         </Header>
         <Content>
           <Route path="/auth" render={(props) => {
