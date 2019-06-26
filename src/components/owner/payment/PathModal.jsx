@@ -101,7 +101,9 @@ export default class PathModal extends Component {
                         <Row type='flex' justify='center'>
                             <Col>
                                 <ButtonGroup>
-                                    <Button type="primary" onClick={() => this.modal("reviewModalVis")}>Review Walker</Button>
+
+                                    {this.props.isOwner ? <Button type="primary" onClick={() => this.modal("reviewModalVis")}>Review Walker</Button> : null
+                                    }
 
                                     <Button type="primary" onClick={this.cancel}>
                                         Go Back</Button>

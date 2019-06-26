@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
+import { Modal } from 'antd'
 
 //This file handles all of the authentication and storage functions which allow the user to interact with firebase. For the sake of making it more readable I seperated these functions from the functions which interact with the real time database. The only interactions this file has with the databse is the intial registration for a new user.
 
@@ -57,7 +58,10 @@ export const login = (email, password, accountType) => {
             return user;
         })
         .catch(function (_error) {
-            alert("Username and password did not match")
+            Modal.error({
+                title: 'Error',
+                content: 'Username and Password did not match, Please Try Again'
+            })
         })
 }
 
@@ -81,7 +85,10 @@ export const registerWithFirebase = (email, password) => {
             return data.user.uid
         })
         .catch(function (_error) {
-            alert("There was a problem registering you. Please try again.")
+            Modal.error({
+                title: 'Error',
+                content: 'Username and Password did not match, Please Try Again',
+            });
 
         });
 }

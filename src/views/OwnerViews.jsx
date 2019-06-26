@@ -26,6 +26,7 @@ export default class OwnerViews extends Component {
         pathTrack: [],
         fence: [],
         user: {},
+        isOwner: true
 
     }
 
@@ -94,28 +95,27 @@ export default class OwnerViews extends Component {
     //notication modals
     startModal = (dog) => {
         Modal.confirm({
-            title: `A Walk has started!`,
+            title: `Hey ${this.state.user.firstName}!`,
             content: (
                 <div>
                     <h2>{dog.name} is on a walk!</h2>
-                    <h3>Click OK below to watch where the walker goes</h3>
+                    <p>Click OK below to watch where the walker goes</p>
                 </div>
             ),
             onOk: () => {
                 this.props.history.push(`/owners/walks/${dog.id}`)
-            }
-            ,
+            },
             onCancel() { }
         })
     }
 
     endModal = (dog) => {
         Modal.confirm({
-            title: `A Walk has started!`,
+            title: `Hey ${this.state.user.firstName}!`,
             content: (
                 <div>
                     <h2>{dog.name}'s walk has ended!</h2>
-                    <h3>Click OK below to finalize payment</h3>
+                    <p>Click OK below to finalize payment</p>
                 </div>
             ),
             onOk: () => {
@@ -225,24 +225,10 @@ export default class OwnerViews extends Component {
                             invoice.id === props.match.params.id
                         )
                         if (!invoice) {
-                            // invoice = {
-                            //     ammount: null,
-                            //     date: null,
-                            //     distance: null,
-                            //     dogName: null,
-                            //     ownerId: null,
-                            //     ownerFirstName: null,
-                            //     ownerLastName: null,
-                            //     walkerId: null,
-                            //     walkerFirstName: null,
-                            //     walkerLastName: null,
-                            //     path: [],
-                            //     resolved: null,
-                            //     dogImg: null
-                            // }
                             return
                         }
                         return <PathModal {...props}
+                            isOwner={this.state.isOwner}
                             invoice={invoice}
                         />
                     } else {
