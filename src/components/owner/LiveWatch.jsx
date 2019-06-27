@@ -24,8 +24,10 @@ export default class LiveWatch extends Component {
 
 
     componentDidMount() {
-        this.pathRender = L.polyline(this.props.path, { lineCap: 'circle', color: '#05B2DC' })
-        this.marker = L.marker(this.props.path[0])
+        this.setState({ walkPath: [this.props.path] }, () => {
+            this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#05B2DC' })
+        })
+        this.marker = L.marker(this.props.path)
         const currentUser = JSON.parse(sessionStorage.getItem("user"))
         this.setState({ user: currentUser })
         // create map
@@ -47,12 +49,19 @@ export default class LiveWatch extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.path !== prevProps.path) {
-            this.pathRender = ''
-            this.pathRender = L.polyline(this.props.path, { lineCap: 'circle', color: '#05B2DC' })
-            this.pathRender.addTo(this.map)
+            this.pathRender.remove()
+            this.pathRender = null
+            console.log(this.props.path)
+            const path = [...this.state.walkPath, this.props.path]
+            this.setState({ walkPath: path }, () => {
+                this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#256EFF' })
+                this.pathRender.addTo(this.map)
+            })
             if (this.marker !== null) {
                 this.marker.remove()
-                this.marker = L.marker(this.props.path.pop())
+                const currentPath = [...this.state.walkPath]
+                const currentLoc = currentPath.pop()
+                this.marker = L.marker(currentLoc)
                 this.marker.addTo(this.map)
             }
         }
