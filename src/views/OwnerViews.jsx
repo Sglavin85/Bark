@@ -26,8 +26,9 @@ export default class OwnerViews extends Component {
         pathTrack: [],
         fence: [],
         user: {},
-        isOwner: true
-
+        isOwner: true,
+        walkers: [],
+        walkersAreReady: false
     }
 
     isAuthenticated = () => sessionStorage.getItem("user") !== null
@@ -45,23 +46,30 @@ export default class OwnerViews extends Component {
         API.getFence(this.props.user.uid).then(fence => this.setState({ fence: fence }))
         this.setState({ dogs: this.props.dogs })
 
+        API.getWalkers().then(walkers => {
+            const walkerArray = Object.values(walkers)
+            this.setState({ walkers: walkerArray }, () => {
+                this.setState({ walkersAreReady: true })
+            })
+        })
+
     }
 
-    componentDidUpdate(prevProps) {
-        //once the dogs is loaded into the parent components state then the refs will be created for each of the dogs that the owner has.
-        if (this.props.dogs !== prevProps.dogs) {
-            //in case this is not the first update for the dogs in the parent components array this will turn off all the refs for an owner.
-            this.refArray.forEach(ref => {
-                ref.off()
+    turnOffRefs() {
+        //this will turn off all the refs for an owner.
+        this.refArray.forEach(ref => {
+            ref.off()
 
-            })
-            //and then reset the array to be empty
-            this.refArray = []
+        })
+        //and then reset the array to be empty
+        this.refArray = []
+    }
 
-            //sets the props to state and then on the callback from setstate iterates over the array to create listeners for the real time database
-            this.setState({ dogs: this.props.dogs }, () => {
-                this.props.dogs.forEach(dog => {
-
+    turnOnRefs() {
+        API.getUserDogs(this.state.user)
+            .then(dogs => {
+                const parsedDogs = Object.values(dogs)
+                parsedDogs.forEach(dog => {
                     //listens to the databse for a new child that is created. When a walk is started a new key is created called "walk" once the conditions are met then the navbar is changed to conditionally render a button which allows the owner to go to the live tracking page and also opens a modal to alert the user that thier dog is being walked.
                     var walkRef = firebase.database().ref(`animals/${dog.id}`)
                     this.refArray.push(walkRef)
@@ -84,12 +92,25 @@ export default class OwnerViews extends Component {
                     //listens to the database for the dogs record for anything that gets deleted. if the condition is met then the button on the nav bar goes away and the user is alerted that the walk has ended which will redirect them to the checkout page.
                     var endWalkRef = firebase.database().ref(`animals/${dog.id}`)
                     this.refArray.push(endWalkRef)
-                    endWalkRef.on(`child_removed`, (_snapshot) => {
+                    endWalkRef.on(`child_removed`, (snapshot) => {
+                        console.log(snapshot)
                         this.props.hideNavBar()
                         this.endModal(dog)
                     })
                 })
             })
+    }
+
+
+
+    componentDidUpdate(prevProps) {
+        //once the dogs is loaded into the parent components state then the refs will be created for each of the dogs that the owner has.
+        if (this.props.dogs !== prevProps.dogs) {
+            //in case this is not the first update for the dogs in the parent components array this will turn off all the refs for an owner and then reset the array to be empty
+            this.turnOffRefs()
+
+            //sets the props to state and then on the callback from setstate iterates over the array to create listeners for the real time database
+            this.turnOnRefs()
         }
     }
     //notication modals
@@ -156,7 +177,7 @@ export default class OwnerViews extends Component {
                 />
                 <Route exact path="/owners/dogs" render={(props) => {
                     if (this.isAuthenticated()) {
-                        return <OwnerDogs {...props} user={this.props.user} />
+                        return <OwnerDogs {...props} turnOnRefs={this.turnOnRefs} turnOffRefs={this.turnOffRefs} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />
@@ -183,7 +204,7 @@ export default class OwnerViews extends Component {
                 />
                 <Route path="/owners/walkers" render={(props) => {
                     if (this.isAuthenticated()) {
-                        return <OwnerWalkersViews {...props} user={this.props.user} />
+                        return <OwnerWalkersViews {...props} walkers={this.state.walkers} walkersAreReady={this.state.walkersAreReady} user={this.props.user} />
                     } else {
                         return <Redirect to="/auth/login"
                         />

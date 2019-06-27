@@ -46,6 +46,7 @@ export default class Map extends Component {
             id: 'mapbox.streets'
         }).addTo(this.map);
 
+
         //logic to handle the change of the marker location which in turn changes the boundaries of the fence. is fired when the dragging of a marker is completed.
 
         const handleMarkerDrag = (e) => {
@@ -74,6 +75,9 @@ export default class Map extends Component {
         }
 
         this.fenceRender.addTo(this.map)
+        if (this.props.fence.length > 0) {
+            this.map.fitBounds(this.props.fence)
+        }
 
         // on click logic for the map which adds a marker and adds the listeners for that marker for the drag start and drag end also adds the same point to the fence array. 
 

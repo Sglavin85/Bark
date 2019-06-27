@@ -15,9 +15,10 @@ export default class PathModal extends Component {
         super(props)
         this.state = {
             ownerFence: [],
-            lat: '',
-            long: '',
+            lat: this.props.invoice.lat,
+            long: this.props.invoice.long,
             path: this.props.invoice.path,
+            fence: this.props.invoice.fence,
             isWalkerPage: false,
             reviewModalVis: false
 
@@ -27,26 +28,22 @@ export default class PathModal extends Component {
     //this view is what renders to show the details of a walk that has happened but has not yet been resolved. On Mount  we get the walker using ther id that is attached to the invoice and post that next to a map of the route that was walked which is saved as part fo the invoice object. We also get the fence that the owner uses for their dogs using the owners Id which is also attached to the invoice object. then we render the map and display the fence and the path.
     componentDidMount() {
         API.getWalker(this.props.invoice.walkerId)
-            .then(walker => this.setState({ walker: walker }, () => { this.setState({ isWalkerReady: true }) }))
-        API.getFence(this.props.invoice.ownerId)
-            .then(fence => this.setState({ ownerFence: fence }, () => {
-                API.getOwner(fence[0].userId)
-
-                    .then(owner => this.setState({ lat: owner.lat, long: owner.long }, () => {
-                        // create map
-                        this.map = L.map('map')
-                            .setView([this.state.lat, this.state.long], 17)
-                        // add tiles to map
-                        L.tileLayer(keys.mapbox, {
-                            maxZoom: 18,
-                            id: 'mapbox.streets'
-                        }).addTo(this.map);
-                        const fenceRender = L.polygon(this.state.ownerFence[0].fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
-                        fenceRender.addTo(this.map)
-                        const pathRender = L.polyline(this.state.path, { lineCap: 'circle', color: '#256EFF' })
-                        pathRender.addTo(this.map)
-                    }))
+            .then(walker => this.setState({ walker: walker }, () => {
+                this.setState({ isWalkerReady: true })
             }))
+        // create map
+        this.map = L.map('map')
+            .setView([this.state.lat, this.state.long], 17)
+        // add tiles to map
+        L.tileLayer(keys.mapbox, {
+            maxZoom: 18,
+            id: 'mapbox.streets'
+        }).addTo(this.map);
+        const fenceRender = L.polygon(this.state.fence, { lineCap: 'circle', color: '#324759', fillRule: "nonzero", })
+        fenceRender.addTo(this.map)
+        const pathRender = L.polyline(this.state.path, { lineCap: 'circle', color: '#256EFF' })
+        pathRender.addTo(this.map)
+
         API.getWalkerReviews(this.props.invoice.walkerId)
             .then(reviews => {
                 const parsedReviews = Object.values(reviews)

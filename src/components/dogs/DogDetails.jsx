@@ -139,28 +139,25 @@ export default class DogDetails extends Component {
                                     </Col>)}
                         </Row>
                         <div className="hr"></div>
-                        <Row type="flex" justify="center">
+                        <Row type="flex" justify="start">
                             <Col>
-                                <Row type="flex" justify='start'>
-                                    <Col>
-                                        <h1>Reviews</h1>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        {!!this.state.reviews ? (
-                                            this.state.reviews.map((review) => (
-                                                <Review
-                                                    {...this.props}
-                                                    review={review}
-                                                    key={review.id}
-                                                />
-                                            ))) : null}
-                                    </Col>
-                                </Row>
-
+                                <h1>Reviews</h1>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col span={24}>
+                                {!!this.state.reviews ? (
+                                    this.state.reviews.map((review) => (
+                                        <Review
+                                            {...this.props}
+                                            review={review}
+                                            key={review.id}
+                                        />
+                                    ))) : null}
+                            </Col>
+                        </Row>
+
+
                     </Col>
                 </Row>
 
