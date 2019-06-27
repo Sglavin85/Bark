@@ -39,7 +39,7 @@ export default class Review extends Component {
                     </Col>
                 </Row>
                 <div className="reviewText">
-                    <Col>
+                    <Col span={24}>
                         <Row type="flex" justify="start">
                             <Col >
                                 <Row type="flex" justify="start" >
@@ -48,7 +48,7 @@ export default class Review extends Component {
                                     </Col>
                                 </Row>
                                 <Row type="flex" justify="start" >
-                                    <Col span={23}>
+                                    <Col span={24}>
                                         <p>{this.props.review.review}</p>
                                     </Col>
                                 </Row>

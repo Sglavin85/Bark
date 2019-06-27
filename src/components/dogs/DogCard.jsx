@@ -43,8 +43,10 @@ export default class DogCard extends Component {
 
 
     handleDeleteSubmit = async (id) => {
+        await this.props.turnOffRefs()
         await API.deleteUserDog(id)
         this.props.update()
+        this.props.turnOnRefs()
     }
 
     //Modal for the delete button

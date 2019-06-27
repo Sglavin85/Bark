@@ -186,7 +186,10 @@ class Map extends Component {
                 walkerLastName: this.state.user.lastName,
                 path: this.state.walkPath,
                 resolved: false,
-                dogImg: this.props.dog.image
+                dogImg: this.props.dog.image,
+                lat: this.state.lat,
+                long: this.state.long,
+                fence: this.state.userFence.fence
             }
             //adds the invoice to the databse
             API.postInvoice(obj)

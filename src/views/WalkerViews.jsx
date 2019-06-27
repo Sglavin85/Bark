@@ -14,7 +14,9 @@ import PathModal from '../components/owner/payment/PathModal'
 class WalkerViews extends Component {
     state = {
         dogs: [],
-        isOwner: false
+        isOwner: false,
+        invoices: [],
+        areInvoicesReady: false
     }
 
     componentDidMount() {
@@ -26,7 +28,9 @@ class WalkerViews extends Component {
         API.getAllInvoices().then(invoices => {
             if (invoices !== null) {
                 const parsedInvoices = Object.values(invoices)
-                this.setState({ invoices: parsedInvoices })
+                this.setState({ invoices: parsedInvoices }, () => {
+                    this.setState({ areInvoicesReady: true })
+                })
             }
         })
     }
@@ -101,24 +105,26 @@ class WalkerViews extends Component {
                     }
                 }}
                 />
-                <Route exact path="/walkers/paths/:id" render={(props) => {
-                    if (this.isAuthenticated()) {
+                {this.state.areInvoicesReady ?
+                    <Route exact path="/walkers/paths/:id" render={(props) => {
+                        if (this.isAuthenticated()) {
 
-                        let invoice = this.state.invoices.find(invoice =>
-                            invoice.id === props.match.params.id
-                        )
-                        if (!invoice) {
-                            return
+                            let invoice = this.state.invoices.find(invoice =>
+                                invoice.id === props.match.params.id
+                            )
+                            if (!invoice) {
+                                return
+                            }
+                            return <PathModal {...props}
+                                isOwner={this.state.isOwner}
+                                invoice={invoice}
+                            />
+                        } else {
+                            return <Redirect to="/auth/login" />
                         }
-                        return <PathModal {...props}
-                            isOwner={this.state.isOwner}
-                            invoice={invoice}
-                        />
-                    } else {
-                        return <Redirect to="/auth/login" />
-                    }
-                }}
-                />
+                    }}
+                    /> : null
+                }
             </>
         )
     }

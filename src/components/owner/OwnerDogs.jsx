@@ -19,6 +19,7 @@ export default class OwnerDogs extends Component {
 
     // on mount gets the current user out of session storage and then gets that users dogs from the database. 
     componentDidMount() {
+        console.log(this.props.refs)
         var currentUser = JSON.parse(sessionStorage.getItem("user"))
         API.getUserDogs(currentUser).then(userDogs => {
             const dogArray = Object.values(userDogs)
@@ -58,6 +59,8 @@ export default class OwnerDogs extends Component {
                 API.addUserDog(obj)
                 this.updateDogs()
                 this.cancelModal("createModalVis")
+                this.props.turnOffRefs()
+                this.props.turnOnRefs()
             })
 
         this.setState({
@@ -82,6 +85,8 @@ export default class OwnerDogs extends Component {
             const dogCards = dogs.map((dog, index) => (
                 <Col key={index}>
                     <DogCard
+                        turnOffRefs={this.props.turnOffRefs}
+                        turnOnRefs={this.props.turnOnRefs}
                         dogPage={this.state.dogPage}
                         dog={dog}
                         key={index}
