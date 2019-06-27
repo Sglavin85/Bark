@@ -127,10 +127,10 @@ export default class OwnerViews extends Component {
     }
     //adds the new coords to the array in state
     updatePath = (lat, long) => {
-        debugger
         const newLatLong = [lat, long]
-        const newArray = [...this.state.pathTrack, newLatLong]
-        this.setState({ pathTrack: newArray })
+        // const pathArray = [...this.state.pathTrack]
+        // pathArray.push(newLatLong)
+        this.setState({ pathTrack: newLatLong })
     }
     //if component is about to unmount (i.e. user logs out ) the listeners are turned off and the listener array is emptied.
     componentWillUnmount() {

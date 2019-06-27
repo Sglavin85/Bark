@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import NavBar from './components/nav/NavBar'
 import Foot from './components/footer/Footer'
 import { Layout } from 'antd'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import AuthViews from './views/AuthViews';
 import WalkerViews from './views/WalkerViews';
 import OwnerViews from './views/OwnerViews'
@@ -87,6 +87,12 @@ class Wag extends Component {
 
           <Route path="/walkers" render={(props) => {
             return <WalkerViews {...props} user={this.state.user} userLoggedIn={this.props.userLoggedIn} />
+          }}
+          />
+
+          <Route exact path="/" render={(props) => {
+            return <Redirect to="/auth/login"
+            />
           }}
           />
 

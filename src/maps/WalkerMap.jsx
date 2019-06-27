@@ -96,10 +96,10 @@ class Map extends Component {
                 this.setState({ walkPath: path }, () => {
                     // draws the new line based off the updated path array
                     this.pathRender.remove()
-                    this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#324759' })
+                    this.pathRender = L.polyline(this.state.walkPath, { lineCap: 'circle', color: '#256EFF' })
                     this.pathRender.addTo(this.map)
                 })
-            }, e => { console.warn(`Error(${e.code}): ${e.message}`) }, { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            }, e => { console.warn(`Error(${e.code}): ${e.message}`) }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         }
     }
@@ -113,7 +113,7 @@ class Map extends Component {
         this.setState({ walkIsActive: true, startTime: start }, () => {
             this.trackWalk()
             //after firing the track walk function once sets an interval to refire the function every 15 seconds
-            this.timeoutControl = setInterval(this.trackWalk, 15000)
+            this.timeoutControl = setInterval(this.trackWalk, 10000)
         })
     }
 
