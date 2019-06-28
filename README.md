@@ -26,7 +26,7 @@ Wag uses a number of open source projects to work properly:
 
 And of course Wag itself is open source with a [public repository][Wag] on GitHub.
 
-###ERD
+### ERD
 
 ![image](images/ERD.png)
 
