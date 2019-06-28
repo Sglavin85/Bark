@@ -1,68 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![image](https://www.dropbox.com/s/z62yalwog176rse/linkedin_banner_image_2.png?dl=0)
+# Wag
 
-## Available Scripts
+A web based application that helps busy dog owners get their dog walked while they at work
 
-In the project directory, you can run:
+# Features!
 
-### `npm start`
+- Creates a Map and allow user to create a digital fence that can be saved and edited
+- Dynamically draw a route based on the geotags pulled by the browser
+- Allow a user to view the path when someone else is walking their dog in near real time
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Tech
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Wag uses a number of open source projects to work properly:
 
-### `npm test`
+* [ReactJS] - A JavaScript framework for building user interfaces
+* [node.js] - evented I/O for the backend
+* [Ant Design] - CSS Library using components for modern web appos
+* [Firebase Authentication] - It provides an end-to-end identity solution, supporting email and password accounts
+* [Firebase Storage] -  quickly and easily store and serve user-generated content, such as photos
+* [Firebase Realtime Database] - The Firebase Realtime Database is a cloud-hosted NoSQL database that lets you store and sync data between your users in realtime.
+* [Leaflet] - an open-source JavaScript library for mobile-friendly interactive maps
+* [Mapbox]- Provides building blocks to add location features like maps, search, and navigation into any experience you create.
+* [GeoLib] - Library to provide basic geospatial operations like distance calculation, conversion of decimal coordinates 
+* [Mapquest] - Accurate geocoding API 
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+And of course Wag itself is open source with a [public repository][Wag] on GitHub.
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Wag requires [Node.js](https://nodejs.org/) v4+ to run.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Install the dependencies and devDependencies and start the server.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+$ cd wag
+$ npm install -d
+$ node app
+```
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[//]: # (These are reference links used in the body)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+   [Wag]: <https://wag-app-d212c.firebaseapp.com>
+   [git-repo-url]: <https://github.com/Sglavin85/Wag>
+   [Firebase Storage]: <https://firebase.google.com/products/storage/?authuser=0>
+   [Firebase Authentication]: <https://firebase.google.com/products/auth/?authuser=0>
+   [Firebase Realtime Database]: <https://firebase.google.com/products/realtime-database/?authuser=0>
+   [node.js]: <http://nodejs.org>
+   [Ant Design]: <https://ant.design/>
+   [Leaflet]: <https://leafletjs.com/>
+   [Mapbox]: <https://www.mapbox.com/>
+   [Geolib]: <https://www.npmjs.com/package/geolib>
+   [ReactJS]: <https://reactjs.org/>
+   [Mapquest]: <https://developer.mapquest.com/>
