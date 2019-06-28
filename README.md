@@ -1,4 +1,4 @@
-![image](https://www.dropbox.com/s/z62yalwog176rse/linkedin_banner_image_2.png?dl=0)
+![image](images/bannerLogo.png)
 # Wag
 
 A web based application that helps busy dog owners get their dog walked while they at work
