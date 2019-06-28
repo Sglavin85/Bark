@@ -26,6 +26,10 @@ Wag uses a number of open source projects to work properly:
 
 And of course Wag itself is open source with a [public repository][Wag] on GitHub.
 
+###ERD
+
+![image](images/ERD.png)
+
 ### Installation
 
 Wag requires [Node.js](https://nodejs.org/) v4+ to run.
