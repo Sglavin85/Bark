@@ -1,5 +1,5 @@
 ![image](images/bannerLogo.png)
-# Wag
+# [Wag]
 
 A web based application that helps busy dog owners get their dog walked while they at work
 
